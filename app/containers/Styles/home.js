@@ -8,7 +8,7 @@ import CalendarWallpaper from '../HomePage/images/calendar.jpg';
 import LogoutWallpaper from '../HomePage/images/logout.png';
 
 export default () => ({
-  root: {
+	root: {
     flex: '1 1 auto',
     marginTop: 40,
   },

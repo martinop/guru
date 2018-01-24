@@ -8,38 +8,38 @@ import { withStyles } from 'material-ui/styles';
 import Stepper, { Step, StepLabel } from 'material-ui/Stepper';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
+import { CircularProgress } from 'material-ui/Progress';
 import SelectedCourses from '../../components/selectedCourses';
 import { scheduleMaker } from '../../utils/scheduleMaker';
 import SemestersList from '../../components/semestersList';
 import Styles from '../Styles/tools';
 
-let segundos;
 class ToolsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
-  state = {
-    courses: [],
-    pensum: [],
+	state = {
+		courses: [],
+		pensum: [],
 		fetching: false,
 		combinations: [],
 		activeStep: null,
-		notifications: []
-  }
-  componentWillMount() {
-    this.setState({ fetching: true });
-    fetch(`http://guru.vnz.la/API/pensum?cookie=${this.props.user.cookie}`)
-    .then((response) => response.json())
-    .then((data) => {
-      const pensum = Object.keys(data).map((sem) => data[sem]);
-      this.setState({ pensum, fetching: false, activeStep: 0 });
-    });
-  }
+		notifications: [],
+	}
+	componentWillMount() {
+		this.setState({ fetching: true });
+		fetch(`http://guru.vnz.la/API/pensum?cookie=${this.props.user.cookie}`)
+			.then((response) => response.json())
+			.then((data) => {
+				const pensum = Object.keys(data).map((sem) => data[sem]);
+				this.setState({ pensum, fetching: false, activeStep: 0 });
+			});
+	}
 
-  getCoursesSections = (courses) =>{
+	getCoursesSections = (courses) => {
 		this.setState({ activeStep: 2 });
 		if (courses.length === 0)
-			this.setState({ combinations: []})
+			this.setState({ combinations: [] });
 		else {
-			this.setState( {fetching: true})
+			this.setState({ fetching: true });
 			const subjects = courses.map((course) => course.code);
 			fetch('http://guru.vnz.la/API/schedules', {
 				method: 'POST',
@@ -50,45 +50,43 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log('Success')
+				console.log('Success');
 				scheduleMaker(data.schedules, (r) => {
 					const { schedules, notifications } = r;
-					this.setState({ fetching: false, combinations: schedules, notifications, activeStep: 3 })
-				})
+					this.setState({ fetching: false, combinations: schedules, notifications, activeStep: 3 });
+				});
 			});
 		}
 	}
 
-  addCourse = (course) => {
-    const { courses } = this.state;
-    let coursesToState = Object.assign({}, courses);
-    if (courses.filter((c) => c.code === course.code).length === 0)
-      coursesToState = courses.concat(course);
-
-    else
-      coursesToState = courses.filter((c) => c.code !== course.code);
-
+	addCourse = (course) => {
+		const { courses } = this.state;
+		let coursesToState = Object.assign({}, courses);
+		if (courses.filter((c) => c.code === course.code).length === 0)
+			coursesToState = courses.concat(course);
+		else
+			coursesToState = courses.filter((c) => c.code !== course.code);
 		this.setState({ courses: coursesToState, activeStep: 1 });
-  };
+	};
 
-  removeCourse = (index) => {
-    const { courses } = this.state;
+	removeCourse = (index) => {
+		const { courses } = this.state;
 		const coursesToState = courses.slice().filter((_, i) => i !== index);
 		this.setState({ courses: coursesToState, activeStep: 2 });
 	};
 
-  render() {
-    const { pensum, fetching, courses, combinations, activeStep } = this.state;
+	render() {
+		const { pensum, fetching, courses, combinations, activeStep } = this.state;
 		console.log(combinations);
-    const { classes } = this.props;
-    return (
+		const { classes } = this.props;
+		return (
       <div className={classes.root} >
-        <Grid
-          container
-          justify="center" 
-          direction="row"
-          spacing={40}
-        >
+				<Grid
+					container
+					justify="center"
+					direction="row"
+					spacing={40}
+				>
           <Grid item xs={11} sm={11} md={8} lg={6}>
             <Stepper activeStep={activeStep}>
               <Step key={1}>
@@ -104,31 +102,45 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
             </Stepper>
           </Grid>
         </Grid>
-        <Grid
-          container
-          justify="center"
-          direction="row"
-          spacing={40}
-        >
+				<Grid
+					container
+					justify="center"
+					direction="row"
+					spacing={40}
+				>
           <Grid item xs={11} sm={5} md={3}>
-            <SemestersList
-              fetching={pensum.length === 0 && fetching}
-              pensum={pensum}
-              addCourse={this.addCourse}
-              courses={courses}
-            />
+						<SemestersList
+							fetching={pensum.length === 0 && fetching}
+							pensum={pensum}
+							addCourse={this.addCourse}
+							courses={courses}
+						/>
           </Grid>
           <Grid item xs={11} sm={5} md={2}>
             <Paper className={classes.grid}>
-              <SelectedCourses
-                courses={courses}
-                removeCourse={this.removeCourse}
-              />
+							<SelectedCourses
+								courses={courses}
+								removeCourse={this.removeCourse}
+							/>
             </Paper>
-						<Button className={classes.processBtn} raised color="primary" onClick={() => this.getCoursesSections(courses)} >
-        			Procesar Informacion
-     	 			</Button>
-          </Grid>
+						{courses.length > 0 ? (
+							<div className={classes.wrapper}>
+								<Button
+									raised
+									onClick={() => this.getCoursesSections(courses)}
+									className={classes.processBtn}
+									color="primary"
+									disabled={fetching}
+								>
+									Procesar informacion
+								</Button>
+								{fetching && <CircularProgress size={24} className={classes.buttonProgress} />}
+
+							</div>
+						)
+							: null
+						}
+					</Grid>
           <Grid item xs={11} sm={11} md={6} >
             <Paper className={classes.grid}>
 							{combinations.length > 0 ? (
@@ -139,63 +151,63 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 								>
 									<Grid item xs={2}>
 										<h4>LUNES</h4>
-										{combinations[0].schedule.lunes.classes.map((classe) => {
-											return (
+										{combinations[0].schedule.lunes.classes.map((classe) =>
+											(
 												<div>
 													<h5>{classe.description}</h5>
 												</div>
-											);
-										})}
+											)
+										)}
 									</Grid>
 									<Grid item xs={2}>
 										<h4>MARTES</h4>
-										{combinations[0].schedule.martes.classes.map((classe) => {
-											return (
+										{combinations[0].schedule.martes.classes.map((classe) =>
+											(
 												<div>
 													<h5>{classe.description}</h5>
 												</div>
-											);
-										})}
+											)
+										)}
 									</Grid>
 									<Grid item xs={2}>
 										<h4>MIERCOLES</h4>
-										{combinations[0].schedule.miercoles.classes.map((classe) => {
-											return (
+										{combinations[0].schedule.miercoles.classes.map((classe) =>
+											(
 												<div>
 													<h5>{classe.description}</h5>
 												</div>
-											);
-										})}
+											)
+										)}
 									</Grid>
 									<Grid item xs={2}>
 										<h4>JUEVES</h4>
-										{combinations[0].schedule.jueves.classes.map((classe) => {
-											return (
+										{combinations[0].schedule.jueves.classes.map((classe) =>
+											(
 												<div>
 													<h5>{classe.description}</h5>
 												</div>
-											);
-										})}
+											)
+										)}
 									</Grid>
 									<Grid item xs={2}>
 										<h4>VIERNES</h4>
-										{combinations[0].schedule.viernes.classes.map((classe) => {
-											return (
+										{combinations[0].schedule.viernes.classes.map((classe) =>
+											(
 												<div>
 													<h5>{classe.description}</h5>
 												</div>
-											);
-										})}
+											)
+										)}
 									</Grid>
 									<Grid item xs={2}>
 										<h4>SABADO</h4>
-										{combinations[0].schedule.sabado.classes.map((classe) => {
-											return (
+										{combinations[0].schedule.sabado.classes.map((classe) =>
+											(
 												<div>
 													<h5>{classe.description}</h5>
 												</div>
-											);
-										})}
+											)
+										)}
 									</Grid>
 								</Grid>
 								) : null}
@@ -203,18 +215,18 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
           </Grid>
         </Grid>
       </div>
-    );
-  }
+		);
+	}
 }
 
 ToolsPage.propTypes = {
-  classes: PropTypes.object.isRequired,
-  user: PropTypes.object,
+	classes: PropTypes.object.isRequired,
+	user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
-  const { user } = state.get('login');
-  return { user };
+	const { user } = state.get('login');
+	return { user };
 };
 
 
