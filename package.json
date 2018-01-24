@@ -1,16 +1,16 @@
 {
-  "name": "react-boilerplate",
-  "version": "3.5.0",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "name": "guru",
+  "version": "0.1.0",
+  "description": "Herramienta para optimizar los servicios virtuales de la URU",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/martinop/guru.git"
   },
   "engines": {
     "npm": ">=3",
     "node": ">=5"
   },
-  "author": "Max Stoiber",
+  "author": "Martin Ocando",
   "license": "MIT",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
@@ -170,7 +170,7 @@
     }
   },
   "dllPlugin": {
-    "path": "node_modules/react-boilerplate-dlls",
+    "path": "node_modules/guru-dlls",
     "exclude": [
       "chalk",
       "compression",
