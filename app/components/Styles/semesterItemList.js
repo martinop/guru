@@ -3,6 +3,9 @@ export default (theme) => ({
 		fontSize: theme.typography.pxToRem(15),
 		fontWeight: theme.typography.fontWeightRegular,
 	},
+	fullWidth: {
+		width: '100%',
+	},
 	coursesSelector: {
 		display: 'flex',
 		flexDirection: 'column',

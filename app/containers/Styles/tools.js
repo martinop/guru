@@ -5,5 +5,8 @@ export default (theme) => ({
     },
     grid: {
       padding: 15,
-    },
+		},
+		processBtn: {
+			marginTop: 16,
+		}
   });

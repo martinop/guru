@@ -95,7 +95,7 @@ function dependencyHandlers() {
    * Reminder: You need to exclude any server side dependencies by listing them in dllConfig.exclude
    */
   if (!dllPlugin.dlls) {
-    const manifestPath = path.resolve(dllPath, 'GURURDeps.json');
+    const manifestPath = path.resolve(dllPath, 'GURUDeps.json');
 
     if (!fs.existsSync(manifestPath)) {
       logger.error('The DLL manifest is missing. Please run `npm run build:dll`');

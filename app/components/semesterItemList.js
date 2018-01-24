@@ -31,7 +31,7 @@ function SemesterListItem({ classes, semesterCourses, semesterNumber, currentCou
 						dispersion = true;
 
 					const usingCourse = exist > 0 ? classes.activeCourse : null;
-					const finalClass = [classes.noActiveCourse];
+					const finalClass = [classes.noActiveCourse, classes.fullWidth];
 					finalClass.push(dispersion ? classes.dispersionCourse : usingCourse);
 					const renderButton = () =>
 					(
@@ -47,7 +47,7 @@ function SemesterListItem({ classes, semesterCourses, semesterNumber, currentCou
 					if (!dispersion)
 						return renderButton();
 					return (
-					<Tooltip id="tooltip-top-start" title="Dispersion" placement="top-start">
+					<Tooltip title="Dispersion" placement="top-start">
 							{renderButton()}
 					</Tooltip>);
 				})}

@@ -11,6 +11,7 @@ function SemestersList({ classes, fetching, pensum, courses, addCourse }) {
 		<div>
 			{!fetching && pensum.map((semester, index) => (
 				<SemesterListItem
+					key={index + 1}
 					semesterNumber={index + 1}
 					semesterCourses={semester}
 					currentCourses={courses}
