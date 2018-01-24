@@ -50,8 +50,11 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				const { schedules, notifications } = scheduleMaker(data.schedules)
-				this.setState( { fetching: false, combinations: schedules, notifications, activeStep: 3 })
+				console.log('Success')
+				scheduleMaker(data.schedules, (r) => {
+					const { schedules, notifications } = r;
+					this.setState({ fetching: false, combinations: schedules, notifications, activeStep: 3 })
+				})
 			});
 		}
 	}
@@ -75,9 +78,8 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 	};
 
   render() {
-    const { pensum, fetching, courses, combinations, notifications, activeStep } = this.state;
+    const { pensum, fetching, courses, combinations, activeStep } = this.state;
 		console.log(combinations);
-		console.log(activeStep)
     const { classes } = this.props;
     return (
       <div className={classes.root} >

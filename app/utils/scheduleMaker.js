@@ -1,4 +1,7 @@
-export function scheduleMaker(courSchedules){
+import WebWorker from './WebWorker';
+import NoUniqueCoursesWorker from './CoursesNoUniquesWorker';
+
+export function scheduleMaker(courSchedules, callback){
 	let schedule = {
 		lunes: {classes: []}, 
 		martes: {classes: []}, 
@@ -23,8 +26,6 @@ export function scheduleMaker(courSchedules){
 			notifications.push({course: e.description, message: 'Unassigned Day'})
 		return e.schedules[0].day
 	})
-	const coursesName = Array.from(new Set(courSchedules.map(e => e.description)))
-
 	//Filter schedules by unique courses and set it as the base schedule
 	const uniques = courSchedules.filter(c => c.unique)
 	uniques.forEach(c => {
@@ -36,82 +37,42 @@ export function scheduleMaker(courSchedules){
 	let multiples = courSchedules.filter(c => !c.unique)
 
 	//if there's only unique courses add directly to schedules combinations
-	if(multiples.length == 0)
-			schedulesCombinations.push({freeHours: 0, freeDays: 0, schedule: tempSchedule})
+	if(multiples.length == 0){
+		schedulesCombinations.push({freeHours: 0, freeDays: 0, schedule: tempSchedule})
+		callback(schedulesCombinations, notifications);
+	}
 	else{
-			//Get the name of the courses
+			//Get the name of the courses	
+			const coursesName = Array.from(new Set(courSchedules.map(e => e.description)))
 			const coursesNameNU = Array.from(new Set(multiples.map(e => e.description)))
 			//Group courses by name and sort the array by length
 			multiples = coursesNameNU.map(name => multiples.filter(course => course.description == name)).sort((a,b) => b.length - a.length)
-
-			const combinations = getCombinations(multiples, 0, [], {})
-			combinations.forEach(combination => {
-					const courses = getKeys(combination).map(c => combination[c])
-					tempSchedule = JSON.parse(JSON.stringify(baseSchedule))
-					courses.forEach(course => {
-							const scheduleWithCourse = handleAvailables(course, tempSchedule)
-							if(scheduleWithCourse)
-									tempSchedule = scheduleWithCourse
-					})
-					const names = new Set(getKeys(tempSchedule)
-							.map(day => tempSchedule[day].classes
-									.map(e => e.description).join(',')
-							).join(',').split(',').filter(e=> e != ''))
-
-					//Add every generated schedule(if all courses were added) with the current course of the 2nd iteration
-					if(names.size == coursesName.length){
-							//Sort classes by Hour
-							getKeys(tempSchedule).map(day => {
-									tempSchedule[day].classes = tempSchedule[day].classes.sort((a,b) => {
-											const hourA = parseInt(a.begin.split(':')[0])
-											const hourB = parseInt(b.begin.split(':')[0])
-											return hourA - hourB
-									})
-							})
-							schedulesCombinations.push({freeDays: 0, freeHours: 0, schedule: tempSchedule})
-					}
-			})
-	}
-
-	//Calculate the free Hours
-	schedulesCombinations.forEach(combination => {
-			combination.freeHours = getKeys(combination.schedule).reduce((previousValue, day) => {
-					let classDay = Object.assign(combination.schedule[day], {freeHours: 0})
-					if(classDay.classes.length >= 1){
-						for(let i = 0; i < classDay.classes.length-1; i++){
-							const [currentClassHour, currentClassMinutes, ] = classDay.classes[i].end.split(':').map(e => parseInt(e))
-							const [nextClassHour, nextClassMinutes, ] = classDay.classes[i+1].begin.split(':').map(e => parseInt(e))
-							classDay.freeHours += timeBetween({hour: currentClassHour, minute: currentClassMinutes}, {hour: nextClassHour, minute: nextClassMinutes})
-						}
-						return previousValue + classDay.freeHours
-					}
-					else
-						return previousValue
-					
-			}, 0)
-			combination.freeDays = getKeys(combination.schedule).map(d => combination.schedule[d]).filter(e => e.classes.length === 0).length
-	})
-
-	//Sort Combinations by free days and separete in groups
-	const group = schedulesCombinations
-			.sort((a,b) => a.freeDays - b.freeDays)
-			.reduce((r, a) =>{
-					r[a.freeDays] = r[a.freeDays] || []
-					r[a.freeDays].push(a);
-					return r;
-			}, Object.create(null));
-
-	//Sort every group by free hours and concat all groups -> reverse to order by free days desc
-	return {
-		schedules: schedulesCombinations = []
-			.concat(...getKeys(group)
-			.map(e => group[e].sort((a,b) => a.freeHours -  b.freeHours))
-			.reverse()).slice(0,20),	
-		notifications,
+			const workerInstance = new WebWorker(NoUniqueCoursesWorker)
+			workerInstance.addEventListener('message', (m) => {
+				// Sort Combinations by free days and separete in groups
+				const group = m.data
+				.sort((a,b) => a.freeDays - b.freeDays)
+				.reduce((r, a) =>{
+						r[a.freeDays] = r[a.freeDays] || []
+						r[a.freeDays].push(a);
+						return r;
+				}, Object.create(null));
+				// Sort every group by free hours and concat all groups -> reverse to order by free days desc{
+				callback({
+					schedules: []
+						.concat(...Object.keys(group)
+							.map(e => group[e].sort((a,b) => a.freeHours -  b.freeHours))
+							.reverse())
+						.slice(0,20),	
+					notifications,
+				});
+				workerInstance.terminate();
+			}, false)
+			workerInstance.postMessage({ coursesName, multiples, tempSchedule, baseSchedule, notifications })
 	}
 
 	function getCombinations(options, optionIndex, results, current) {
-			const allKeys = getKeys(options);
+			const allKeys = Object.keys(options);
 			const optionKey = allKeys[optionIndex];
 			const allKeysLength = allKeys.length
 			const vals = options[optionKey];
@@ -148,8 +109,8 @@ export function scheduleMaker(courSchedules){
 			schedules.forEach(e=> { 
 					const classHour = {begin: e.begin, end: e.end}
 					//Create an array comparing the current course section with the non free days in the schedule
-					const freeDays = getKeys(globalSchedule).filter(d => globalSchedule[d].classes.length == 0)
-					const noFreeDays = getKeys(globalSchedule)
+					const freeDays = Object.keys(globalSchedule).filter(d => globalSchedule[d].classes.length == 0)
+					const noFreeDays = Object.keys(globalSchedule)
 							.filter(d => globalSchedule[d].classes.length > 0)
 							.filter(d=> d.indexOf(e.day) > -1)
 							.map(d=> globalSchedule[d].classes)
