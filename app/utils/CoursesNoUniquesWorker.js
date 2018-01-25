@@ -1,10 +1,10 @@
-export default function MyWorker(){
-	const onmessage = (e) => {
+module.exports = function worker (self) {
+	self.addEventListener('message', (e) => {
 		let tempSchedule = e.data;
 		const { multiples, baseSchedule, coursesName } = e.data;
 		const schedulesCombinations = [];
 		const combinations = getCombinations(multiples, 0, [], {});
-
+		console.log(`COMBINATIONS: ${combinations.length}`);
 		combinations.forEach((combination) => {
 			const courses = Object.keys(combination).map(c => combination[c])
 			tempSchedule = JSON.parse(JSON.stringify(baseSchedule))
@@ -57,7 +57,7 @@ export default function MyWorker(){
 		
 		// Sort every group by free hours and concat all groups -> reverse to order by free days desc
 		postMessage(combinationsWithFreeAttrs);
-	}
+	})
 	function getCombinations(options, optionIndex, results, current) {
 		const allKeys = Object.keys(options);
 		const optionKey = allKeys[optionIndex];

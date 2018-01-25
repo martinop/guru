@@ -116,7 +116,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 							courses={courses}
 						/>
           </Grid>
-          <Grid item xs={11} sm={5} md={2}>
+          <Grid item xs={11} sm={6} md={2}>
             <Paper className={classes.grid}>
 							<SelectedCourses
 								courses={courses}

@@ -1,5 +1,4 @@
-import WebWorker from './WebWorker';
-import NoUniqueCoursesWorker from './CoursesNoUniquesWorker';
+import work from 'webworkify-webpack'
 
 export function scheduleMaker(courSchedules, callback){
 	let schedule = {
@@ -47,7 +46,7 @@ export function scheduleMaker(courSchedules, callback){
 			const coursesNameNU = Array.from(new Set(multiples.map(e => e.description)))
 			//Group courses by name and sort the array by length
 			multiples = coursesNameNU.map(name => multiples.filter(course => course.description == name)).sort((a,b) => b.length - a.length)
-			const workerInstance = new WebWorker(NoUniqueCoursesWorker)
+			const workerInstance = work(require.resolve('./CoursesNoUniquesWorker.js'))
 			workerInstance.addEventListener('message', (m) => {
 				// Sort Combinations by free days and separete in groups
 				const group = m.data
@@ -66,7 +65,6 @@ export function scheduleMaker(courSchedules, callback){
 						.slice(0,20),	
 					notifications,
 				});
-				workerInstance.terminate();
 			}, false)
 			workerInstance.postMessage({ coursesName, multiples, tempSchedule, baseSchedule, notifications })
 	}

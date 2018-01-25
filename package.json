@@ -130,9 +130,12 @@
         2,
         "tab"
       ],
-			"react/jsx-indent": 0,
-			"react/no-array-index-key": 0,
-      "react/jsx-indent-props": [1, "tab"],
+      "react/jsx-indent": 0,
+      "react/no-array-index-key": 0,
+      "react/jsx-indent-props": [
+        1,
+        "tab"
+      ],
       "jsx-a11y/aria-props": 2,
       "jsx-a11y/heading-has-content": 0,
       "jsx-a11y/href-no-hash": 2,
@@ -251,6 +254,7 @@
     "styled-components": "2.0.0",
     "typeface-roboto": "0.0.50",
     "warning": "3.0.0",
+    "webworkify-webpack": "^2.1.0",
     "whatwg-fetch": "2.0.3"
   },
   "devDependencies": {
