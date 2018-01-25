@@ -3,23 +3,29 @@ import PropTypes from 'prop-types';
 import {
     Route,
     Redirect,
-    withRouter
+    withRouter,
   } from 'react-router-dom';
 
-  const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={props => (
-      rest.user ? (
-        <Component {...props}/>
-      ) : (
-        <Redirect to={{
-          pathname: '/',
-          state: { from: props.location }
-        }}/>
-      )
-    )}/>
-  )
+const PrivateRoute = ({ component: Component, ...rest }) => (
+		<Route
+			{...rest}
+			render={(props) => (
+				rest.user ? (
+					<Component {...props} />
+				) : (
+					<Redirect
+						to={{
+							pathname: '/',
+							state: { from: props.location },
+						}}
+					/>
+				)
+			)}
+		/>
+  );
 PrivateRoute.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+	component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+	location: PropTypes.object,
 };
 
 export default withRouter(PrivateRoute);

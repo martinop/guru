@@ -6,6 +6,14 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Styles from '../Styles/home';
+import ScheduleMakerWallpaper from '../HomePage/images/schedule.jpg';
+import SchedulesWallpaper from '../HomePage/images/schedules.jpg';
+import ScoresWallpaper from '../HomePage/images/scores.jpg';
+import FinancesWallpaper from '../HomePage/images/finances.jpg';
+import CommunityWallpaper from '../HomePage/images/community.jpg';
+import CalendarWallpaper from '../HomePage/images/calendar.jpg';
+import LogoutWallpaper from '../HomePage/images/logout.png';
+import ButtonBase from 'material-ui/ButtonBase';
 
 class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -19,7 +27,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
           direction="row"
           spacing={16}
         >
-          <Grid item xs={9} sm={4} md={6}>
+          <Grid item xs={9} sm={5} md={6}>
             <Paper elevation={0} className={classes.mainBoxContent}>
               <div className={classes.boxTitleContainer}>
                 <Typography type="headline" className={classes.whiteColor}>
@@ -32,20 +40,58 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
             </Paper>
           </Grid>
           <Grid item xs={9} sm={4} md={3}>
-            <Paper elevation={0} className={[classes.boxContent, classes.scheduleBoxContent, classes.schedulesWpp].join(' ')}>
-              <div className={classes.boxTitleContainer}>
-                <Typography type="headline" className={classes.boxTitle}>
-                  Horario
-                </Typography>
-              </div>
-            </Paper>
-            <Paper elevation={0} className={[classes.boxContent, classes.scheduleWpp].join(' ')}>
-              <div className={classes.boxTitleContainer}>
-                <Typography type="headline" className={classes.boxTitle}>
-                  Prepara tu horario
-                </Typography>
-              </div>
-            </Paper>
+						<ButtonBase
+							focusRipple
+							key="Dasdsadas"
+							className={classes.image}
+							style={{
+								width: '100%',
+							}}
+						>
+							<span
+								className={classes.imageSrc}
+								style={{
+									backgroundImage: `url(${SchedulesWallpaper})`,
+								}}
+							/>
+							<span className={classes.imageBackdrop} />
+							<span className={classes.imageButton}>
+								<Typography
+									type="subheading"
+									color="inherit"
+									className={classes.imageTitle}
+								>
+									HORARIO
+									<span className={classes.imageMarked} />
+								</Typography>
+							</span>
+						</ButtonBase>
+						<ButtonBase
+							focusRipple
+							key="Dasdsad333as"
+							className={[classes.image, classes.marginTop]}
+							style={{
+								width: '100%',
+							}}
+						>
+							<span
+								className={classes.imageSrc}
+								style={{
+									backgroundImage: `url(${ScheduleMakerWallpaper})`,
+								}}
+							/>
+							<span className={classes.imageBackdrop} />
+							<span className={classes.imageButton}>
+								<Typography
+									type="subheading"
+									color="inherit"
+									className={classes.imageTitle}
+								>
+									PREPARAR HORARIO
+									<span className={classes.imageMarked} />
+								</Typography>
+							</span>
+						</ButtonBase>
           </Grid>
           
         </Grid>
@@ -56,32 +102,88 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
           spacing={16}
         >
           <Grid item xs={9} sm={3}>
-            <Paper elevation={0} className={[classes.boxContent, classes.scoresWpp].join(' ')}>
-              <div className={classes.boxTitleContainer}>
-                <Typography type="headline" className={classes.boxTitle}>
-                  Calificaciones
-                </Typography>
-              </div>
-            </Paper>
+					<ButtonBase
+							focusRipple
+							key="Dasdsad333as"
+							className={[classes.image, classes.marginTop]}
+							style={{
+								width: '100%',
+							}}
+						>
+							<span
+								className={classes.imageSrc}
+								style={{
+									backgroundImage: `url(${ScoresWallpaper})`,
+								}}
+							/>
+							<span className={classes.imageBackdrop} />
+							<span className={classes.imageButton}>
+								<Typography
+									type="subheading"
+									color="inherit"
+									className={classes.imageTitle}
+								>
+									CALIFICACIONES
+									<span className={classes.imageMarked} />
+								</Typography>
+							</span>
+						</ButtonBase>
           </Grid>
           <Grid item xs={9} sm={3}>
-            <Paper elevation={0} className={[classes.boxContent, classes.financesWpp].join(' ')}>
-              <div className={classes.boxTitleContainer}>
-                <Typography type="headline" className={classes.boxTitle}>
-                  Finanzas
-                </Typography>
-              </div>
-            </Paper>
-            <div className={classes.darkBg} />
+					<ButtonBase
+							focusRipple
+							key="Dasdsad333as"
+							className={[classes.image, classes.marginTop]}
+							style={{
+								width: '100%',
+							}}
+						>
+							<span
+								className={classes.imageSrc}
+								style={{
+									backgroundImage: `url(${FinancesWallpaper})`,
+								}}
+							/>
+							<span className={classes.imageBackdrop} />
+							<span className={classes.imageButton}>
+								<Typography
+									type="subheading"
+									color="inherit"
+									className={classes.imageTitle}
+								>
+									FINANZAS
+									<span className={classes.imageMarked} />
+								</Typography>
+							</span>
+						</ButtonBase>
           </Grid>
           <Grid item xs={9} sm={3}>
-            <Paper elevation={0} className={[classes.boxContent, classes.communityWpp].join(' ')}>
-              <div className={classes.boxTitleContainer}>
-                <Typography type="headline" className={classes.boxTitle}>
-                  Comunidad
-                </Typography>
-              </div>
-            </Paper>
+					<ButtonBase
+							focusRipple
+							key="Dasdsad333as"
+							className={[classes.image, classes.marginTop]}
+							style={{
+								width: '100%',
+							}}
+						>
+							<span
+								className={classes.imageSrc}
+								style={{
+									backgroundImage: `url(${CommunityWallpaper})`,
+								}}
+							/>
+							<span className={classes.imageBackdrop} />
+							<span className={classes.imageButton}>
+								<Typography
+									type="subheading"
+									color="inherit"
+									className={classes.imageTitle}
+								>
+									COMUNIDAD
+									<span className={classes.imageMarked} />
+								</Typography>
+							</span>
+						</ButtonBase>
           </Grid>
           
         </Grid>

@@ -32,8 +32,8 @@ App.propTypes = {
 
 
 const mapStateToProps = (state) => {
-  const { user } = state.get('login');
-  return { user };
+	const { user } = state.get('login');
+	return { user };
 };
 
 export default withRouter(withStyles(Styles)(connect(mapStateToProps)(App)));
