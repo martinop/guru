@@ -1,4 +1,4 @@
-export default () => ({
+export default (theme) => ({
 	root: {
 		flexGrow: 1,
 		marginTop: 30,
@@ -18,5 +18,20 @@ export default () => ({
 	},
 	wrapper: {
 		position: 'relative',
+	},
+	mBottom: {
+		marginBottom: 20,
+	},
+	mRight: {
+		marginRight: 10,
+	},
+	pensumProgress: {
+		margin: `0 ${theme.spacing.unit * 2}px`,
+	},
+	gridLoading: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		display: 'flex',
+		padding: 30,
 	},
 });

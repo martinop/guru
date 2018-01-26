@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import { CircularProgress } from 'material-ui/Progress';
 import Typography from 'material-ui/Typography';
+import ArrowBack from 'material-ui-icons/ArrowBack';
+import ArrowForward from 'material-ui-icons/ArrowForward';
 import SelectedCourses from '../../components/selectedCourses';
 import { scheduleMaker } from '../../utils/scheduleMaker';
 import SemestersList from '../../components/semestersList';
@@ -25,6 +27,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 		combinations: [],
 		activeStep: null,
 		notifications: [],
+		scheduleIndex: 0,
 	}
 	componentWillMount() {
 		this.setState({ fetching: true });
@@ -53,9 +56,9 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 			.then((response) => response.json())
 			.then((data) => {
 				console.log('Success');
-				this.setState({ fetching: false });
+				this.setState({ fetching: false, combinations: [] });
 				scheduleMaker(data.schedules, (r) => {
-					console.log(r)
+					console.log(r);
 					const { schedules, notifications } = r;
 					this.setState({ combinations: schedules, notifications, activeStep: 3 });
 				});
@@ -78,11 +81,18 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 		const coursesToState = courses.slice().filter((_, i) => i !== index);
 		this.setState({ courses: coursesToState, activeStep: 1 });
 	};
-
+	handleSchedule = (forward) => {
+		const { scheduleIndex } = this.state;
+		if (forward)
+			this.setState({ scheduleIndex: scheduleIndex + 1 });
+		else
+			this.setState({ scheduleIndex: scheduleIndex - 1 });
+	}
 	render() {
-		const { pensum, fetching, courses, combinations, activeStep } = this.state;
-		if(combinations.length > 0)
-			console.log(combinations);
+		const { pensum, fetching, courses, combinations, activeStep, scheduleIndex } = this.state;
+		if (combinations.length > 0)
+			console.log(combinations.length);
+
 		const { classes } = this.props;
 		return (
       <div className={classes.root} >
@@ -148,10 +158,36 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 					</Grid>
           <Grid item xs={11} sm={11} md={7} >
             <Paper className={classes.grid}>
-							<Typography type="display1" gutterBottom>
-								Mejores Combinaciones
-							</Typography>
-							{combinations.length > 0 ? (
+						{combinations.length > 0 ? (
+							<div>
+								<Typography type="display1" gutterBottom>
+									Mejores Combinaciones
+								</Typography>
+								<div className={classes.mBottom}>
+									{scheduleIndex - 1 >= 0 &&
+										<Button
+											fab
+											className={classes.mRight}
+											onClick={() => this.handleSchedule(false)}
+											color="primary"
+											aria-label="back"
+										>
+											<ArrowBack />
+										</Button>
+									}
+									{scheduleIndex + 1 < combinations.length &&
+										<Button
+											fab
+											className={classes.mRight}
+											onClick={() => this.handleSchedule(true)}
+											color="secondary"
+											aria-label="next"
+										>
+											<ArrowForward />
+										</Button>
+									}
+								</div>
+								{combinations.length > 0 ? (
 								<Grid
 									container
 									justify="center"
@@ -161,42 +197,49 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 									<Grid item xs={2}>
 										<ScheduleDay
 											label="Lunes"
-											courses={combinations[0].schedule.lunes.classes}
+											courses={combinations[scheduleIndex].schedule.lunes.classes}
 										/>
 									</Grid>
 									<Grid item xs={2}>
 										<ScheduleDay
 											label="Martes"
-											courses={combinations[0].schedule.martes.classes}
+											courses={combinations[scheduleIndex].schedule.martes.classes}
 										/>
 									</Grid>
 									<Grid item xs={2}>
 										<ScheduleDay
 											label="Miercoles"
-											courses={combinations[0].schedule.miercoles.classes}
+											courses={combinations[scheduleIndex].schedule.miercoles.classes}
 										/>
 									</Grid>
 									<Grid item xs={2}>
 										<ScheduleDay
 											label="Jueves"
-											courses={combinations[0].schedule.jueves.classes}
+											courses={combinations[scheduleIndex].schedule.jueves.classes}
 										/>
 									</Grid>
 									<Grid item xs={2}>
 										<ScheduleDay
 											label="Viernes"
-											courses={combinations[0].schedule.viernes.classes}
+											courses={combinations[scheduleIndex].schedule.viernes.classes}
 										/>
 									</Grid>
 									<Grid item xs={2}>
 										<ScheduleDay
 											label="Sabado"
-											courses={combinations[0].schedule.sabado.classes}
+											courses={combinations[scheduleIndex].schedule.sabado.classes}
 										/>
 									</Grid>
 								</Grid>
 								) : null}
-            </Paper>
+							</div>
+						) : (
+								activeStep === 2 && !fetching &&
+									<div className={classes.gridLoading}>
+										<CircularProgress className={classes.processProgress} size={70} thickness={7} />
+									</div>
+						)}
+						</Paper>
           </Grid>
         </Grid>
       </div>
