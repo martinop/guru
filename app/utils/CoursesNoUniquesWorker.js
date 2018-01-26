@@ -45,9 +45,9 @@ module.exports = function worker(self) {
 						const nextClassMinutes = nextClass[1];
 						classDay.freeHours += timeBetween({ hour: currentClassHour, minute: currentClassMinutes }, { hour: nextClassHour, minute: nextClassMinutes });
 					}
-					return previousValue + classDay.freeHours;
+					return previousValue < 0 ? classDay.freeHours : previousValue + classDay.freeHours;
 				}
-				return previousValue;
+				return previousValue < 0 ? 0 : previousValue;
 			}, 0);
 			combination.freeDays = Object.keys(combination.schedule).map((d) => combination.schedule[d]).filter((e) => e.classes.length === 0).length;
 			return combination;
