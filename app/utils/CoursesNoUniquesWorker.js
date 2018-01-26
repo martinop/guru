@@ -34,23 +34,22 @@ module.exports = function worker(self) {
 		const combinationsWithFreeAttrs = schedulesCombinations.map((combination) => {
 			combination.freeHours = Object.keys(combination.schedule).reduce((previousValue, day) => {
 				const classDay = Object.assign(combination.schedule[day], { freeHours: 0 });
-				if (classDay.classes.length >= 1){
-					const classesLenght = classDay.classes.length - 1;
-					for (let i = 0; i < classesLenght; i++) {
-						// Get the current class hour and minutes [hour, minutes]
+				if (classDay.classes.length >= 1) {
+					for (let i = 0; i < classDay.classes.length - 1; i++) {
+						// Set the current class hour and minutes [hour, minutes]
 						const currentClass = classDay.classes[i].end.split(':').map((e) => parseInt(e));
 						const currentClassHour = currentClass[0];
 						const currentClassMinutes = currentClass[1];
-						const nextClass = classDay.classes[i + 1].begin.split(':').map((g) => parseInt(g));
+						const nextClass = classDay.classes[i + 1].begin.split(':').map((e) => parseInt(e));
 						const nextClassHour = nextClass[0];
 						const nextClassMinutes = nextClass[1];
-						classDay.freeHours += timeBetween({ hour: currentClassHour, minute: currentClassMinutes }, { hour: nextClassHour, minute: nextClassMinutes })
+						classDay.freeHours += timeBetween({ hour: currentClassHour, minute: currentClassMinutes }, { hour: nextClassHour, minute: nextClassMinutes });
 					}
 					return previousValue + classDay.freeHours;
 				}
 				return previousValue;
 			}, 0);
-			combination.freeDays = Object.keys(combination.schedule).map((d) => combination.schedule[d]).filter((f) => f.classes.length === 0).length;
+			combination.freeDays = Object.keys(combination.schedule).map((d) => combination.schedule[d]).filter((e) => e.classes.length === 0).length;
 			return combination;
 		});
 
@@ -65,7 +64,7 @@ module.exports = function worker(self) {
 		const valsLenght = vals.length;
 		for (let i = 0; i < valsLenght; i++) {
 			current[optionKey] = vals[i];
-			if (optionIndex + 1 < allKeysLength) 
+			if (optionIndex + 1 < allKeysLength)
 				getCombinations(options, optionIndex + 1, results, current);
 			else {
 				const res = JSON.parse(JSON.stringify(current));
@@ -75,7 +74,7 @@ module.exports = function worker(self) {
 
 		return results;
 	}
-	function getKeys(o, k, r) {
+	function getKeys(o, k) {
 		r = [];
 		for (k in o)
 			r.hasOwnProperty.call(o, k) && r.push(k);
@@ -92,19 +91,19 @@ module.exports = function worker(self) {
 		const availablesCourse = [];
 		const classesPerWeek = schedules.length;
 		schedules.forEach((e) => {
-			const classHour = { begin: e.begin, end: e.end }
+			const classHour = { begin: e.begin, end: e.end };
 			// Create an array comparing the current course section with the non free days in the schedule
+			// const freeDays = Object.keys(globalSchedule).filter((d) => globalSchedule[d].classes.length == 0);
 			const noFreeDays = Object.keys(globalSchedule)
-				.filter((d) => globalSchedule[d].classes.length > 0)
-				.filter((d) => d.indexOf(e.day) > -1)
-				.map((d) => globalSchedule[d].classes);
+					.filter((d) => globalSchedule[d].classes.length > 0)
+					.filter((d) => d.indexOf(e.day) > -1)
+					.map((d) => globalSchedule[d].classes);
 
 			if (noFreeDays.length > 0) {
 				const onNoFreeDaysInterf = handleCoursesWInterf(noFreeDays, classHour);
 				const withInterf = onNoFreeDaysInterf.filter((c) => c.length > 0);
-				if (withInterf.length === 0) {
+				if (withInterf.length === 0)
 					availablesCourse.push(e);
-				}
 			}
 			else
 				availablesCourse.push(e);
@@ -116,12 +115,12 @@ module.exports = function worker(self) {
 		return false;
 	}
 	function modifySchedule(courseObj, newSchedule, currentSchedule) {
-		const tempSchedule = Object.assign({}, currentSchedule);
+		const temp = Object.assign({}, currentSchedule);
 		const { course, description, hc, literal, subject } = courseObj;
 		newSchedule.forEach((d) => {
-			tempSchedule[d.day].classes.push(Object.assign(d, { course, description, hc, literal, subject }));
+			temp[d.day].classes.push(Object.assign(d, { course, description, hc, literal, subject }));
 		});
-		return tempSchedule;
+		return temp;
 	}
 	function handleCoursesWInterf(days, courseHour) {
 		return days.map((day) => {
@@ -129,9 +128,9 @@ module.exports = function worker(self) {
 			day.forEach((c) => {
 				const courseA = { begin: c.begin, end: c.end };
 				const courseB = { begin: courseHour.begin, end: courseHour.end };
-					// console.log(c.description, " | ",description)
-					// console.log(c.begin,"-",c.end, " | ",courseHour.begin, "-", courseHour.end)
-					// console.log(hourInterferes(courseA, courseB))
+						// console.log(c.description, " | ",description)
+						// console.log(c.begin,"-",c.end, " | ",courseHour.begin, "-", courseHour.end)
+						// console.log(hourInterferes(courseA, courseB))
 				if (hourInterferes(courseA, courseB))
 					availables.push(c);
 			});
@@ -144,8 +143,8 @@ module.exports = function worker(self) {
 		const cB = { begin: separateHour(courseB.begin), end: separateHour(courseB.end) };
 		const cA = { begin: separateHour(courseA.begin), end: separateHour(courseA.end) };
 
-		if (cA.begin.hour <= cB.begin.hour && cA.end.hour >= cB.begin.hour
-			|| cA.begin.hour < cB.end.hour && cA.end.hour >= cB.end.hour
+		if ((cA.begin.hour <= cB.begin.hour) && (cA.end.hour >= cB.begin.hour)
+			|| (cA.begin.hour < cB.end.hour) && (cA.end.hour >= cB.end.hour)
 		)
 			return true;
 		return false;

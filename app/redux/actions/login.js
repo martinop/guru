@@ -1,5 +1,5 @@
 export function login({ id, password }) {
-	const u = `http://guru.vnz.la/API/login/v2?cedula=${  id  }&password=${  password}`;
+	const u = `http://guru-sv.risky.rocks/API/login/v2?cedula=${id}&password=${password}`;
 	return fetch(u)
 			.then((response) => response.json().then((json) => ({ json, response })))
 			.then(({ json, response }) => {

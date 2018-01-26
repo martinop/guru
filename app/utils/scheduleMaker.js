@@ -15,8 +15,8 @@ export function scheduleMaker(coursesWithSchedules, callback) {
 	const notifications = [];
 	// Specifies if a course has more than one section and parse day name
 	const courSchedules = coursesWithSchedules.map((e) => {
-		e.unique = (courSchedules.filter((s) => e.subject === s.subject).length) === 1;
-		e.schedules = e.schedules.map((sch) => Object.assign(sch, { day: parseDay(schedule.day) }));
+		e.unique = (coursesWithSchedules.filter((s) => e.subject === s.subject).length) === 1;
+		e.schedules = e.schedules.map((sch) => Object.assign(sch, { day: parseDay(sch.day) }));
 		return e;
 	})
 	// course with unassigned day
@@ -38,26 +38,23 @@ export function scheduleMaker(coursesWithSchedules, callback) {
 	// if there's only unique courses add directly to schedules combinations
 	if (multiples.length === 0) {
 		schedulesCombinations.push({ freeHours: 0, freeDays: 0, schedule: tempSchedule });
-		callback(schedulesCombinations, notifications);
-	}	else {
+		callback({ schedules: schedulesCombinations, notifications });
+	}
+	else {
 			// Get the name of the courses
 		const coursesName = Array.from(new Set(courSchedules.map((e) => e.description)));
 		const coursesNameNU = Array.from(new Set(multiples.map((e) => e.description)));
 			// Group courses by name and sort the array by length
-		multiples = coursesNameNU
-			.map((name) => multiples.filter((course) => course.description === name))
-			.sort((a, b) => b.length - a.length);
-
+		multiples = coursesNameNU.map((name) => multiples.filter((course) => course.description === name)).sort((a, b) => b.length - a.length);
 		const workerInstance = work(require.resolve('./CoursesNoUniquesWorker.js'));
 		workerInstance.addEventListener('message', (m) => {
 				// Sort Combinations by free days and separete in groups
 			const group = m.data
 			.sort((a, b) => a.freeDays - b.freeDays)
 			.reduce((r, a) => {
-				const c = r;
-				c[a.freeDays] = c[a.freeDays] || [];
-				c[a.freeDays].push(a);
-				return c;
+				r[a.freeDays] = r[a.freeDays] || [];
+				r[a.freeDays].push(a);
+				return r;
 			}, Object.create(null));
 			// Sort every group by free hours and concat all groups -> reverse to order by free days desc{
 			callback({
@@ -80,6 +77,7 @@ export function scheduleMaker(coursesWithSchedules, callback) {
 		});
 		return temp;
 	}
+
 	function parseDay(day) {
 		switch (day) {
 		case '1':
@@ -95,7 +93,7 @@ export function scheduleMaker(coursesWithSchedules, callback) {
 		case '6':
 			return 'sabado';
 		default:
-			return 'undefined';
+			return '';
 		}
 	}
 }
