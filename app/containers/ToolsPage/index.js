@@ -16,6 +16,8 @@ import SelectedCourses from '../../components/selectedCourses';
 import { scheduleMaker } from '../../utils/scheduleMaker';
 import SemestersList from '../../components/semestersList';
 import Schedule from '../../components/schedule';
+import CoursesWithSections from '../../api/schedules';
+import Pensum from '../../api/pensum';
 import Styles from '../Styles/tools';
 
 class ToolsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -31,8 +33,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 	}
 	componentWillMount() {
 		this.setState({ fetching: true });
-		fetch(`http://guru-sv.risky.rocks/API/pensum?cookie=${this.props.user.cookie}`)
-			.then((response) => response.json())
+		Pensum(this.props.user.cookie)
 			.then((data) => {
 				const pensum = Object.keys(data).map((sem) => data[sem]);
 				this.setState({ pensum, fetching: false, activeStep: 0 });
@@ -46,23 +47,16 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 		else {
 			this.setState({ fetching: true });
 			const subjects = courses.map((course) => course.code);
-			fetch('http://guru-sv.risky.rocks/API/schedules', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ subjects, cookie: this.props.user.cookie }),
-			})
-			.then((response) => response.json())
-			.then((data) => {
-				console.log('Success');
-				this.setState({ fetching: false, combinations: [] });
-				scheduleMaker(data.schedules, (r) => {
-					console.log(r);
-					const { schedules, notifications } = r;
-					this.setState({ combinations: schedules, notifications, activeStep: 3 });
+			CoursesWithSections(subjects, this.props.user.cookie)
+				.then((data) => {
+					console.log('Success');
+					this.setState({ fetching: false, combinations: [] });
+					scheduleMaker(data.schedules, (r) => {
+						console.log(r);
+						const { schedules, notifications } = r;
+						this.setState({ combinations: schedules, notifications, activeStep: 3 });
+					});
 				});
-			});
 		}
 	}
 
