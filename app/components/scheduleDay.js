@@ -12,9 +12,9 @@ function ScheduleDay({ classes, label, courses }) {
 				{label.toUpperCase()}
       </Typography>
 			<Divider classes={{ root: classes.divider }} light />
-			{courses.map((course) =>
+			{courses.map((course, index) =>
 				(
-					<div className={classes.mTop}>
+					<div key={index} className={classes.mTop}>
 						<Typography type="subheading" gutterBottom >
 							{course.description}
 						</Typography>

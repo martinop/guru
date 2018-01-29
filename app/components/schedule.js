@@ -6,7 +6,7 @@ import ScheduleDay from './scheduleDay';
 export default function Schedule({ days }) {
 	const { lunes, martes, miercoles, jueves, viernes, sabado } = days;
 	return (
-		<Grid container justify="center" direction="row" spacing={20}>
+		<Grid container justify="center" direction="row" spacing={24}>
 			<Grid item xs={2}>
 				<ScheduleDay
 					label="Lunes"
