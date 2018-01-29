@@ -142,8 +142,10 @@ module.exports = function worker(self) {
 		// TO DO: Refactor
 		const cB = { begin: separateHour(courseB.begin), end: separateHour(courseB.end) };
 		const cA = { begin: separateHour(courseA.begin), end: separateHour(courseA.end) };
-
-		if ((cA.begin.hour <= cB.begin.hour) && (cA.end.hour >= cB.begin.hour)
+		if ((cA.end.hour === cB.begin.hour && cA.end.minutes > cB.begin.minutes)
+			|| (cB.end.hour === cA.begin.hour && cB.end.minutes > cA.begin.minutes))
+			return true;
+		else if ((cA.begin.hour <= cB.begin.hour) && (cA.end.hour >= cB.begin.hour)
 			|| (cA.begin.hour < cB.end.hour) && (cA.end.hour >= cB.end.hour)
 		)
 			return true;
