@@ -54,7 +54,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 					scheduleMaker(data.schedules, (r) => {
 						console.log(r);
 						const { schedules, notifications } = r;
-						this.setState({ combinations: schedules, notifications, activeStep: 3 });
+						this.setState({ combinations: schedules, notifications, activeStep: 3, scheduleIndex: 0 });
 					});
 				});
 		}
@@ -84,9 +84,6 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 	}
 	render() {
 		const { pensum, fetching, courses, combinations, activeStep, scheduleIndex } = this.state;
-		if (combinations.length > 0)
-			console.log(combinations.length);
-
 		const { classes } = this.props;
 		return (
       <div className={classes.root} >
