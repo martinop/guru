@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Dialog, { DialogTitle } from 'material-ui/Dialog';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Styles from '../Styles/home';
@@ -12,13 +13,25 @@ import SchedulesWallpaper from '../HomePage/images/schedules.jpg';
 import ScoresWallpaper from '../HomePage/images/scores.jpg';
 import FinancesWallpaper from '../HomePage/images/finances.jpg';
 import CommunityWallpaper from '../HomePage/images/community.jpg';
-import CalendarWallpaper from '../HomePage/images/calendar.jpg';
-import LogoutWallpaper from '../HomePage/images/logout.png';
+// import CalendarWallpaper from '../HomePage/images/calendar.jpg';
+// import LogoutWallpaper from '../HomePage/images/logout.png';
 import BoxItem from '../../components/boxItem';
+import mySchedule from '../../api/mySchedule';
+import Schedule from '../../components/schedule';
 
 class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+	state = {
+		scheduleModal: false,
+		schedule: {},
+	}
+	componentWillMount() {
+		mySchedule(this.props.user.cookie).then((schedule) => {
+			this.setState({ schedule });
+		});
+	}
 	render() {
 		const { classes, user, history: { push } } = this.props;
+		const { scheduleModal, schedule } = this.state;
 		return (
       <div className={classes.root}>
 				<Grid
@@ -43,6 +56,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 						<BoxItem
 							label="Horario"
 							image={SchedulesWallpaper}
+							onClick={() => this.setState({ scheduleModal: true })}
 						/>
 						<BoxItem
 							label="Preparar Horario"
@@ -80,6 +94,21 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 						/>
           </Grid>
         </Grid>
+				<Dialog
+					open={scheduleModal}
+					onClose={() => this.setState({ scheduleModal: false })}
+					onBackdropClick={() => this.setState({ scheduleModal: false })}
+					onEscapeKeyDown={() => this.setState({ scheduleModal: false })}
+					aria-labelledby="mi-horario"
+					maxWidth={false}
+				>
+					<DialogTitle>Horario de clases</DialogTitle>
+					<div style={{ padding: 30 }}>
+						<Schedule
+							days={schedule}
+						/>
+					</div>
+				</Dialog>
       </div>
 		);
 	}

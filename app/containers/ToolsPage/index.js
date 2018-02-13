@@ -179,6 +179,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 									}
 								</div>
 								<Schedule
+									spacing={24}
 									days={combinations[scheduleIndex].schedule}
 								/>
 							</div>
