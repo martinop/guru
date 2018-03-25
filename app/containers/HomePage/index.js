@@ -24,10 +24,8 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 		scheduleModal: false,
 		schedule: {},
 	}
-	componentWillMount() {
-		mySchedule(this.props.user.cookie).then((schedule) => {
-			this.setState({ schedule });
-		});
+	componentDidMount() {
+		mySchedule().then((schedule) => this.setState({ schedule }));
 	}
 	render() {
 		const { classes, user, history: { push } } = this.props;

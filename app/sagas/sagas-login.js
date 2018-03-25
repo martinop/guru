@@ -14,8 +14,8 @@ export function* login({ id, password }) {
 		if (response === undefined || error)
 			yield put(LoginActions.loginFailure(error));
 		else {
-			const { school, name, cookie, period, ced } = response;
-			yield put(LoginActions.loginSuccess({ school, name, cookie, period, ced }));
+			const { school, name, period, ced } = response;
+			yield put(LoginActions.loginSuccess({ school, name, period, ced }));
 		}
 	}
 }

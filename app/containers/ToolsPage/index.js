@@ -33,7 +33,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 	}
 	componentWillMount() {
 		this.setState({ fetching: true });
-		Pensum(this.props.user.cookie)
+		Pensum()
 			.then((data) => {
 				const pensum = Object.keys(data).map((sem) => data[sem]);
 				this.setState({ pensum, fetching: false, activeStep: 0 });
@@ -47,9 +47,8 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 		else {
 			this.setState({ fetching: true });
 			const subjects = courses.map((course) => course.code);
-			CoursesWithSections(subjects, this.props.user.cookie)
+			CoursesWithSections(subjects)
 				.then((data) => {
-					console.log('Success');
 					this.setState({ fetching: false, combinations: [] });
 					scheduleMaker(data.schedules, (r) => {
 						console.log(r);
@@ -59,7 +58,12 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 				});
 		}
 	}
-
+	buttonStatus = (activeStep, fetching) => {
+		if (activeStep === 2) {
+			return fetching ? 'Obteniendo Informacion' : 'Procesando Informacion';
+		}
+		return 'Optimizar horario';
+	}
 	addCourse = (course) => {
 		const { courses } = this.state;
 		let coursesToState = Object.assign({}, courses);
@@ -86,49 +90,49 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 		const { pensum, fetching, courses, combinations, activeStep, scheduleIndex } = this.state;
 		const { classes } = this.props;
 		return (
-      <div className={classes.root} >
+			<div className={classes.root} >
 				<Grid
 					container
 					justify="center"
 					direction="row"
 					spacing={40}
 				>
-          <Grid item xs={11} sm={11} md={8} lg={6}>
-            <Stepper activeStep={activeStep}>
-              <Step key={1}>
-                <StepLabel>Selecciona las materias</StepLabel>
-              </Step>
-              <Step key={2}>
-                <StepLabel>Verifica tus selecciones</StepLabel>
-              </Step>
-              <Step key={3}>
-                <StepLabel>Procesar informacion</StepLabel>
-              </Step>
+					<Grid item xs={11} sm={11} md={8} lg={6}>
+						<Stepper activeStep={activeStep}>
+						<Step key={1}>
+							<StepLabel>Selecciona las materias</StepLabel>
+						</Step>
+						<Step key={2}>
+							<StepLabel>Verifica tus selecciones</StepLabel>
+						</Step>
+						<Step key={3}>
+							<StepLabel>Procesar informacion</StepLabel>
+						</Step>
 
-            </Stepper>
-          </Grid>
-        </Grid>
+						</Stepper>
+					</Grid>
+				</Grid>
 				<Grid
 					container
 					justify="center"
 					direction="row"
 					spacing={40}
 				>
-          <Grid item xs={11} sm={5} md={2}>
+					<Grid item xs={11} sm={5} md={2}>
 						<SemestersList
 							fetching={pensum.length === 0 && fetching}
 							pensum={pensum}
 							addCourse={this.addCourse}
 							courses={courses}
 						/>
-          </Grid>
-          <Grid item xs={11} sm={6} md={2}>
-            <Paper className={classes.grid}>
+					</Grid>
+					<Grid item xs={11} sm={6} md={2}>
+						<Paper className={classes.grid}>
 							<SelectedCourses
 								courses={courses}
 								removeCourse={this.removeCourse}
 							/>
-            </Paper>
+						</Paper>
 						{courses.length > 0 ? (
 							<div className={classes.wrapper}>
 								<Button
@@ -138,7 +142,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 									color="primary"
 									disabled={activeStep === 2}
 								>
-									{activeStep === 2 ? (fetching ? 'Obteniendo Informacion' : 'Procesando Informacion') : 'Optimizar horario'}
+									{this.buttonStatus(activeStep, fetching)}
 								</Button>
 								{fetching && <CircularProgress size={24} className={classes.buttonProgress} />}
 
@@ -147,8 +151,8 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 							: null
 						}
 					</Grid>
-          <Grid item xs={11} sm={11} md={7} >
-            <Paper className={classes.grid}>
+					<Grid item xs={11} sm={11} md={7} >
+						<Paper className={classes.grid}>
 						{combinations.length > 0 ? (
 							<div>
 								<Typography type="display1" gutterBottom>
@@ -190,16 +194,15 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 									</div>
 						)}
 						</Paper>
-          </Grid>
-        </Grid>
-      </div>
+					</Grid>
+				</Grid>
+			</div>
 		);
 	}
 }
 
 ToolsPage.propTypes = {
 	classes: PropTypes.object.isRequired,
-	user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {

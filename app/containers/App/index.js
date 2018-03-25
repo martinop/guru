@@ -11,6 +11,7 @@ import PrivateRoute from '../../utils/privateRoute';
 import Styles from '../Styles/app';
 import Header from '../../components/header';
 
+
 function App(props) {
 	const { classes, user } = props;
 	return (

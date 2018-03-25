@@ -1,11 +1,17 @@
 export function login({ id, password }) {
-	const u = `http://guru-sv.risky.rocks/API/login/v2?cedula=${id}&password=${password}`;
-	return fetch(u)
-			.then((response) => response.json().then((json) => ({ json, response })))
-			.then(({ json, response }) => {
-				if (!response.ok)
-					return Promise.reject(json);
-				return Promise.resolve(json);
-			})
-			.then((response) => ({ response }), (error) => ({ error }));
+	const u = 'http://www.uru.edu:8080/uru-sv/test/login';
+	return fetch(u, {
+		method: 'post',
+		headers: {
+			'Content-type': 'application/json',
+		},
+		body: JSON.stringify({ username: id, password }),
+	})
+	.then((response) => response.json().then((json) => ({ json })))
+	.then(({ json: response }) => {
+		if (response.status === 200)
+			return Promise.resolve(JSON.parse(response.data));
+		return Promise.reject(response.message);
+	})
+	.then((response) => ({ response }), (error) => ({ error }));
 }
