@@ -47,15 +47,19 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 		else {
 			this.setState({ fetching: true });
 			const subjects = courses.map((course) => course.code);
-			CoursesWithSections(subjects)
-				.then((data) => {
-					this.setState({ fetching: false, combinations: [] });
-					scheduleMaker(data.schedules, (r) => {
-						console.log(r);
-						const { schedules, notifications } = r;
-						this.setState({ combinations: schedules, notifications, activeStep: 3, scheduleIndex: 0 });
+			const hc = courses.reduce((prev, current) => prev + current.hc, 0);
+			if (hc <= 27)
+				CoursesWithSections(subjects)
+					.then((data) => {
+						this.setState({ fetching: false, combinations: [] });
+						scheduleMaker(data.schedules, (r) => {
+							console.log(r);
+							const { schedules, notifications } = r;
+							this.setState({ combinations: schedules, notifications, activeStep: 3, scheduleIndex: 0 });
+						});
 					});
-				});
+			else
+				console.log('mostrar exceso de horas.. ', hc);				
 		}
 	}
 	buttonStatus = (activeStep, fetching) => {
@@ -136,7 +140,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 						{courses.length > 0 ? (
 							<div className={classes.wrapper}>
 								<Button
-									raised
+									variant="raised"
 									onClick={() => this.getCoursesSections(courses)}
 									className={classes.processBtn}
 									color="primary"

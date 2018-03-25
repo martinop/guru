@@ -66,7 +66,7 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 								/>
 								<div className={classes.wrapper}>
 									<Button
-										raised
+										variant="raised"
 										onClick={this.handlePressLogin}
 										className={classes.loginBtn}
 										color="primary"
