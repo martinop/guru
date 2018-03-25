@@ -3,8 +3,7 @@ import axios from '../utils/axios';
 
 export default () =>
 	axios.get('subject/getPensum')
-		.then((data) => Promise.resolve(data))
-		.then(({ data: response }) => {
+		.then((response) => {
 			if (response.status === 200) {
 				const data = JSON.parse(response.data);
 				return Promise.resolve(groupBy(data.pensum, 'sem'));

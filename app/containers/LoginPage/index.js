@@ -23,17 +23,24 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 		courses: [],
 		id: '',
 		password: '',
+		manualLogin: false,
 	}
 
 	handlePressLogin = () => {
 		const { id, password } = this.state;
+		this.setState({ manualLogin: true });
 		this.props.attemptLogin(id, password);
 	}
 
+
 	render() {
-		const { classes, fetching, user } = this.props;
+		const { classes, fetching, user, error } = this.props;
 		if (user)
 			return <Redirect to="/home" />;
+
+		else if (!this.state.manualLogin && error)
+			return null;
+
 		return (
 			<div className={classes.root} >
 				<Grid
@@ -91,6 +98,7 @@ LoginPage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	fetching: PropTypes.bool,
 	user: PropTypes.object,
+	error: PropTypes.string,
 	attemptLogin: PropTypes.func,
 };
 
