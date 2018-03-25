@@ -59,7 +59,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 						});
 					});
 			else
-				console.log('mostrar exceso de horas.. ', hc);				
+				console.log('mostrar exceso de horas.. ', hc);
 		}
 	}
 	buttonStatus = (activeStep, fetching) => {
