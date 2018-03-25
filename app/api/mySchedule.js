@@ -3,8 +3,8 @@ import axios from '../utils/axios';
 export default () =>
 	axios.get('status/getStudentSchedule')
 		.then((response) => {
-			if (response.status === 200) {
-				const data = JSON.parse(response.data);
+			if (response.status === 200 || !response.status) {
+				const data = response.status ? JSON.parse(response.data) : response;
 				const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
 				const parseDay = (day) => {
 					switch (day) {

@@ -5,18 +5,17 @@ const config = {
 };
 
 const isOnline = () =>
-	new Promise((resolve) => {
+	new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest();
-		xhr.onerror = resolve(false);
-		xhr.ontimeout = resolve(false);
+		xhr.onerror = reject();
+		xhr.ontimeout = reject();
 		xhr.onload = () => {
 			const response = xhr.responseText.trim();
 			if (!response)
-				resolve(false);
+				reject();
 			else
-                resolve(true);
+                resolve();
 		};
-
 		xhr.open('GET', config.url);
 		xhr.timeout = config.url;
 		xhr.send();

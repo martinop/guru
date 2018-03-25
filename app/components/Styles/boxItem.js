@@ -50,6 +50,17 @@ export default (theme) => ({
 		opacity: 0.7,
 		transition: theme.transitions.create('opacity'),
 	},
+	offline: {
+		opacity: 0.9,
+	},
+	offlineTitle: {
+		position: 'relative',
+		fontSize: 20,
+		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
+		[theme.breakpoints.down('xs')]: {
+			fontSize: 25,
+		},
+	},
 	imageTitle: {
 		position: 'relative',
 		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 4}px ${theme.spacing.unit + 6}px`,
