@@ -9,7 +9,7 @@ export function login({ id, password }) {
 				return Promise.resolve(JSON.parse(response.data));
 			return Promise.reject(response.message);
 		})
-		.then((response) => ({ response }), (error) => ({ error }));
+		.then((response) => ({ response }), (error) => ({ error: JSON.stringify(error) }));
 }
 
 export function validateSession() {
@@ -23,5 +23,5 @@ export function validateSession() {
 				return Promise.resolve(JSON.parse(response.data));
 			return Promise.reject(response.message);
 		})
-		.then((response) => ({ response }), (error) => ({ error }));
+		.then((response) => ({ response }), (error) => ({ error: JSON.stringify(error) }));
 }

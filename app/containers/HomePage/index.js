@@ -16,23 +16,28 @@ import CommunityWallpaper from '../HomePage/images/community.jpg';
 // import LogoutWallpaper from '../HomePage/images/logout.png';
 import BoxItem from '../../components/boxItem';
 import ScheduleModal from '../../components/scheduleModal';
+import FinanceModal from '../../components/financeModal';
 import mySchedule from '../../api/mySchedule';
+import myFinance from '../../api/finance';
 
 import isOnline from '../../utils/isOnline';
 
 class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 	state = {
 		scheduleModal: false,
+		financeModal: false,
 		schedule: {},
+		finance: {},
 		online: true,
 	}
 	componentDidMount() {
 		mySchedule().then((schedule) => this.setState({ schedule }));
+		myFinance().then((finance) => this.setState({ finance }));
 		isOnline().then(() => this.setState({ online: true })).catch(() => this.setState({ online: false }));
 	}
 	render() {
 		const { classes, user, history: { push } } = this.props;
-		const { scheduleModal, schedule, online } = this.state;
+		const { scheduleModal, schedule, online, finance, financeModal } = this.state;
 		return (
 			<div className={classes.root}>
 				<Grid
@@ -86,6 +91,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 							label="Finanzas"
 							image={FinancesWallpaper}
 							customClasses={[classes.marginTop]}
+							onClick={() => this.setState({ financeModal: true })}
 						/>
 					</Grid>
 					<Grid item xs={9} sm={3}>
@@ -100,6 +106,11 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 					open={scheduleModal}
 					data={schedule}
 					close={() => this.setState({ scheduleModal: false })}
+				/>
+				<FinanceModal
+					open={financeModal}
+					data={finance}
+					close={() => this.setState({ financeModal: false })}
 				/>
 			</div>
 		);

@@ -25,6 +25,7 @@ export function* login({ id, password }) {
 }
 
 export function* withSession() {
+	yield put(LoginActions.loginWithSessionRequest());
 	const { response, error } = yield call(validateSession);
 	if (error)
 		yield put(LoginActions.loginFailure(error));

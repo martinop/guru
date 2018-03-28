@@ -35,12 +35,11 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 
 	render() {
 		const { classes, fetching, user, error } = this.props;
+		if (error) console.log(error);
 		if (user)
 			return <Redirect to="/home" />;
-
-		else if (!this.state.manualLogin && error)
+		else if (!this.state.manualLogin && fetching)
 			return null;
-
 		return (
 			<div className={classes.root} >
 				<Grid

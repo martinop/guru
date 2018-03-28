@@ -7,8 +7,8 @@ const config = {
 const isOnline = () =>
 	new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest();
-		xhr.onerror = reject();
-		xhr.ontimeout = reject();
+		xhr.onerror = () => reject();
+		xhr.ontimeout = () => reject();
 		xhr.onload = () => {
 			const response = xhr.responseText.trim();
 			if (!response)

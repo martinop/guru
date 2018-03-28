@@ -20,15 +20,15 @@ class App extends PureComponent {
 	render() {
 		const { classes, user } = this.props;
 		return (
-      <div className={classes.root}>
-        <Header user={user} />
-        <Switch>
-          <Route exact path="/" component={LoginPage} />
-          <PrivateRoute path="/tools" user={user} component={ToolsPage} />
-          <PrivateRoute path="/home" user={user} component={HomePage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </div>
+			<div className={classes.root}>
+				<Header user={user} />
+				<Switch>
+					<Route exact path="/" component={LoginPage} />
+					<PrivateRoute path="/tools" user={user} component={ToolsPage} />
+					<PrivateRoute path="/home" user={user} component={HomePage} />
+					<Route component={NotFoundPage} />
+				</Switch>
+			</div>
 		);
 	}
 }

@@ -6,6 +6,7 @@ const { Types, Creators } = createActions({
 	loginSuccess: ['user'],
 	loginFailure: ['error'],
 	loginWithSession: [],
+	loginWithSessionRequest: [],
 	logoutRequest: [],
 	logoutSuccess: [],
 });
@@ -36,6 +37,7 @@ export const reducer = createReducer(INITIAL_STATE, {
 	[Types.LOGIN_FAILURE]: failure,
 	[Types.LOGOUT_REQUEST]: request,
 	[Types.LOGOUT_SUCCESS]: logout,
+	[Types.LOGIN_WITH_SESSION_REQUEST]: request,
 });
 
 export const isLoggedIn = (loginState) => loginState.user !== null;

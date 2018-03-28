@@ -20,7 +20,7 @@ instance.interceptors.request.use(
 const methods = {
 	get: (url) => {
 		const key = url;
-		const dataFromDB = () => pouchdb.get(key).then((response) => response).catch((err) => err);
+		const dataFromDB = () => pouchdb.get(key).then((response) => Promise.resolve(response)).catch((error) => Promise.resolve({ error }));
 		return new Promise((resolve, reject) =>
 			isOnline()
 			.then(() =>
