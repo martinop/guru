@@ -26,8 +26,8 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 	state = {
 		scheduleModal: false,
 		financeModal: false,
-		schedule: {},
-		finance: {},
+		schedule: null,
+		finance: null,
 		online: true,
 	}
 	componentDidMount() {
@@ -102,16 +102,20 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 						/>
 					</Grid>
 				</Grid>
-				<ScheduleModal
-					open={scheduleModal}
-					data={schedule}
-					close={() => this.setState({ scheduleModal: false })}
-				/>
-				<FinanceModal
-					open={financeModal}
-					data={finance}
-					close={() => this.setState({ financeModal: false })}
-				/>
+				{schedule &&
+					<ScheduleModal
+						open={scheduleModal}
+						data={schedule}
+						close={() => this.setState({ scheduleModal: false })}
+					/>
+				}
+				{finance &&
+					<FinanceModal
+						open={financeModal}
+						data={finance}
+						close={() => this.setState({ financeModal: false })}
+					/>
+				}
 			</div>
 		);
 	}
