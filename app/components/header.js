@@ -21,6 +21,7 @@ function Header({ classes, user, history }) {
 					>
 						GURU
 					</Typography>
+					{user ? <Button onClick={() => history.push('/home')} color="inherit">Inicio</Button> : null}
 					{user ? <Button color="inherit">Salir</Button> : null}
 			</Toolbar>
 		</AppBar>
