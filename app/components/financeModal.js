@@ -9,7 +9,6 @@ import Styles from './Styles/modal';
 import formatMoney from '../utils/formatMoney';
 
 const FinanceModal = ({ classes, open, close, data: { finance, fees } }) => {
-	console.log(finance, fees);
 	const SICuotas = 3 - fees.length;
 	const cuotas = [...Array.from(Array(SICuotas)), ...fees];
 	const totalDebt = fees.reduce((prev, current) => prev + current.amount, 0);
@@ -83,28 +82,28 @@ const FinanceModal = ({ classes, open, close, data: { finance, fees } }) => {
 							</Typography>
 							<Divider className={classes.divider} />
 							<Typography variant="title" className={classes.bold}>
-								Disponible:
+								Deuda:
 							</Typography>
-							<Typography className={[classes.bold, classes.green].join(' ')} variant="display2" gutterBottom>
+							<Typography className={[classes.bold, classes.red].join(' ')} variant="display2" gutterBottom>
 								{ formatMoney(finance.debt) }
 							</Typography>
 							<Typography variant="title" className={classes.bold}>
-								Deuda total:
+								Costo del trimestre:
 							</Typography>
-							<Typography className={[classes.bold, classes.red].join(' ')} variant="display2" gutterBottom>
+							<Typography className={classes.bold} variant="display2" gutterBottom>
 								{ formatMoney(totalDebt) }
 							</Typography>
 							<Typography variant="title" className={classes.bold}>
-								Monto del trimestre:
-							</Typography>
-							<Typography className={classes.bold} variant="display2" gutterBottom>
-								{ formatMoney(finance.payments) }
-							</Typography>
-							<Typography variant="title" className={classes.bold}>
-								Monto historico gastado:
+								Cargos vencidos:
 							</Typography>
 							<Typography className={classes.bold} variant="display2" gutterBottom>
 								{ formatMoney(finance.charges) }
+							</Typography>
+							<Typography variant="title" className={classes.bold}>
+								Total pagado:
+							</Typography>
+							<Typography className={[classes.bold, classes.green].join(' ')} variant="display2" gutterBottom>
+								{ formatMoney(finance.payments) }
 							</Typography>
 						</div>
 					</Grid>
