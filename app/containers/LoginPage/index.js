@@ -51,7 +51,7 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 					<Grid item xs={10} sm={6} md={4} lg={3}>
 						<Paper className={classes.paper}>
 							<Typography
-								type="display3"
+								variant="display3"
 								className={classes.title}
 							>
 								Guru
@@ -66,7 +66,7 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 								<TextField
 									label="Contrasena"
 									margin="normal"
-									type="password"
+									variant="password"
 									onChange={bindInput(this, 'password')}
 									fullWidth
 								/>

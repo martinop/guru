@@ -49,10 +49,10 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 					<Grid item xs={9} sm={5} md={6}>
 						<Paper elevation={0} className={classes.mainBoxContent}>
 						<div className={classes.boxTitleContainer}>
-							<Typography type="headline" className={classes.whiteColor}>
+							<Typography variant="headline" className={classes.whiteColor}>
 							{user.name}
 							</Typography>
-							<Typography type="title" className={classes.whiteColor}>
+							<Typography variant="title" className={classes.whiteColor}>
 							Ing. Computacion
 							</Typography>
 						</div>
@@ -83,6 +83,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 						<BoxItem
 							label="Calificaciones"
 							image={ScoresWallpaper}
+							onClick={() => push('/scores')}
 							customClasses={[classes.marginTop]}
 						/>
 						</Grid>
@@ -96,7 +97,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 					</Grid>
 					<Grid item xs={9} sm={3}>
 						<BoxItem
-							label="Comunidad"
+							label="Materias"
 							image={CommunityWallpaper}
 							customClasses={[classes.marginTop]}
 						/>

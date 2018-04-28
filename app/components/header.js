@@ -5,13 +5,20 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
+import { withRouter } from 'react-router-dom';
 import Styles from './Styles/header';
 
-function Header({ classes, user }) {
+function Header({ classes, user, history }) {
 	return (
 		<AppBar position="static" className={classes.nav}>
 			<Toolbar>
-					<Typography type="title" color="inherit" className={classes.flex}>
+					<Typography
+						onClick={() => history.push('/home')}
+						variant="title"
+						color="inherit"
+						className={classes.flex}
+						style={{ cursor: 'pointer' }}
+					>
 						GURU
 					</Typography>
 					{user ? <Button color="inherit">Salir</Button> : null}
@@ -23,5 +30,6 @@ function Header({ classes, user }) {
 Header.propTypes = {
 	classes: PropTypes.object.isRequired,
 	user: PropTypes.object,
+	history: PropTypes.object,
 };
-export default withStyles(Styles)(Header);
+export default withRouter(withStyles(Styles)(Header));

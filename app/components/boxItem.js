@@ -9,7 +9,7 @@ function BoxItem({ label, image, classes, customClasses, onClick, disabled }) {
 	const buttonClasses = customClasses ? [classes.image, customClasses.join(' ')].join(' ') : classes.image;
 	const onlineLabel = (
 		<Typography
-			type="subheading"
+			variant="subheading"
 			color="inherit"
 			className={classes.imageTitle}
 		>
@@ -19,7 +19,7 @@ function BoxItem({ label, image, classes, customClasses, onClick, disabled }) {
 	);
 	const offlineLabel = (
 		<Typography
-			type="subheading"
+			variant="subheading"
 			color="inherit"
 			className={classes.offlineTitle}
 		>

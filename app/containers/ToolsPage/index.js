@@ -159,7 +159,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 						<Paper className={classes.grid}>
 						{combinations.length > 0 ? (
 							<div>
-								<Typography type="display1" gutterBottom>
+								<Typography variant="display1" gutterBottom>
 									Mejores Combinaciones
 								</Typography>
 								<div className={classes.mBottom}>

@@ -8,24 +8,24 @@ import Styles from './Styles/scheduleDay';
 function ScheduleDay({ classes, label, courses }) {
 	return (
 		<div className={classes.root}>
-			<Typography type="title" gutterBottom>
+			<Typography variant="title" gutterBottom style={{ fontWeight: '600' }}>
 				{label.toUpperCase()}
       </Typography>
 			<Divider classes={{ root: classes.divider }} light />
 			{courses.map((course, index) =>
 				(
 					<div key={index} className={classes.mTop}>
-						<Typography type="subheading" gutterBottom >
+						<Typography variant="subheading" gutterBottom >
 							{course.description}
 						</Typography>
-						<Typography type="subheading">
+						<Typography variant="subheading">
 							{course.begin}
 						</Typography>
-						<Typography type="subheading" gutterBottom>
+						<Typography variant="subheading" gutterBottom>
 							{course.end}
 						</Typography>
 						{course.classRoom &&
-							<Typography type="body2" gutterBottom className={classes.title}>
+							<Typography variant="body2" gutterBottom className={classes.title}>
 								{`SALON ${course.classRoom}`}
 							</Typography>
 						}

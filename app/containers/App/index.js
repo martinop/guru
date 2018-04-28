@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import LoginPage from 'containers/LoginPage/Loadable';
 import ToolsPage from 'containers/ToolsPage/Loadable';
+import ScoresPage from 'containers/ScoresPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import PrivateRoute from '../../utils/privateRoute';
@@ -26,6 +27,7 @@ class App extends PureComponent {
 					<Route exact path="/" component={LoginPage} />
 					<PrivateRoute path="/tools" user={user} component={ToolsPage} />
 					<PrivateRoute path="/home" user={user} component={HomePage} />
+					<PrivateRoute path="/scores" user={user} component={ScoresPage} />
 					<Route component={NotFoundPage} />
 				</Switch>
 			</div>
