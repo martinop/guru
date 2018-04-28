@@ -66,7 +66,7 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 								<TextField
 									label="Contrasena"
 									margin="normal"
-									variant="password"
+									type="password"
 									onChange={bindInput(this, 'password')}
 									fullWidth
 								/>

@@ -9,6 +9,7 @@ import Grid from 'material-ui/Grid';
 import Styles from '../Styles/scores';
 import ScoresPerPeriod from '../../components/scoresPerPeriod';
 import getScores from '../../api/scores';
+import Loading from '../../components/loading';
 
 const dataDoughnut = {
 	labels: ['Aprobadas', 'Reprobadas'],
@@ -64,6 +65,7 @@ class ScoresPage extends React.Component {
 		prom: '0',
 		honor: 0,
 		better: '',
+		fetching: true,
 	};
 
 	componentDidMount() {
@@ -109,7 +111,12 @@ class ScoresPage extends React.Component {
 				approved,
 				reproved,
 				better,
+				fetching: false,
 			});
+		})
+		.catch((err) => {
+			console.log(err);
+			this.props.history.push('/home');
 		});
 	}
 	render() {
@@ -121,83 +128,87 @@ class ScoresPage extends React.Component {
 			prom,
 			honor,
 			better,
+			fetching,
 		} = this.state;
 		dataDoughnut.datasets[0].data = [approved, reproved];
-		return (
-			<div className={classes.root} >
-				<Grid
-					container
-					justify="center"
-					direction="row"
-					spacing={40}
-				>
-					<Grid item xs={10} className={classes.title}>
-						<Typography variant="display3">Estadisticas</Typography>
+		if (!fetching)
+			return (
+				<div className={classes.root} >
+					<Grid
+						container
+						justify="center"
+						direction="row"
+						spacing={40}
+					>
+						<Grid item xs={10} className={classes.title}>
+							<Typography variant="display3">Estadisticas</Typography>
+						</Grid>
+						<Grid item xs={11} sm={11} md={8} lg={6}>
+						</Grid>
 					</Grid>
-					<Grid item xs={11} sm={11} md={8} lg={6}>
-					</Grid>
-				</Grid>
-				<Grid
-					container
-					justify="center"
-					direction="row"
-					spacing={40}
-				>
-					<Grid item xs={11} sm={4} md={3} >
-						<ScoresPerPeriod scores={scores} />
-					</Grid>
-					<Grid item xs={11} sm={7} md={7}>
-						<Paper className={classes.grid}>
-							<Grid
-								container
-								direction="row"
-								justify="center"
-							>
-								<Grid item xs={11} sm={11} md={4} >
-									<Typography className={classes.label} variant="display1" gutterBottom >Materias</Typography>
-									<Doughnut data={dataDoughnut} options={options} />
-								</Grid>
-								<Grid item xs={11} sm={5} md={4} >
-									<block>
-										<Typography variant="display3" className={classes.value}>{better}</Typography>
-										<Typography variant="headline" className={classes.betterPeriod}>Mejor trimestre</Typography>
-									</block>
-									<block className={classes.blockHonor}>
-										<Typography variant="display3" className={classes.value}>{scores.length}</Typography>
-										<Typography variant="headline" className={classes.honorLabel}>Trimestres cursados</Typography>
-									</block>
-									<block className={classes.blockHonor}>
-										<Typography variant="display3" className={classes.value}>{approved + reproved}</Typography>
-										<Typography variant="headline" className={classes.honorLabel}>Materias vistas</Typography>
-									</block>
-								</Grid>
-								<Grid item xs={11} sm={5} md={4} >
-									<block>
-										<Typography variant="display3" className={classes.value}>{prom}pts</Typography>
-										<Typography variant="headline" className={classes.betterPeriod}>Promedio general</Typography>
-									</block>
-									{honor > 0 && (
-										<block className={classes.blockHonor}>
-											<Typography variant="display3" className={classes.value}>{honor}</Typography>
-											<Typography variant="headline" className={classes.honorLabel}>Cuadro de honor</Typography>
+					<Grid
+						container
+						justify="center"
+						direction="row"
+						spacing={40}
+					>
+						<Grid item xs={11} sm={4} md={3} >
+							<ScoresPerPeriod scores={scores} />
+						</Grid>
+						<Grid item xs={11} sm={7} md={7}>
+							<Paper className={classes.grid}>
+								<Grid
+									container
+									direction="row"
+									justify="center"
+								>
+									<Grid item xs={11} sm={11} md={4} >
+										<Typography className={classes.label} variant="display1" gutterBottom >Materias</Typography>
+										<Doughnut data={dataDoughnut} options={options} />
+									</Grid>
+									<Grid item xs={11} sm={5} md={4} >
+										<block>
+											<Typography variant="display3" className={classes.value}>{better}</Typography>
+											<Typography variant="headline" className={classes.betterPeriod}>Mejor trimestre</Typography>
 										</block>
-									)}
+										<block className={classes.blockHonor}>
+											<Typography variant="display3" className={classes.value}>{scores.length}</Typography>
+											<Typography variant="headline" className={classes.honorLabel}>Trimestres cursados</Typography>
+										</block>
+										<block className={classes.blockHonor}>
+											<Typography variant="display3" className={classes.value}>{approved + reproved}</Typography>
+											<Typography variant="headline" className={classes.honorLabel}>Materias vistas</Typography>
+										</block>
+									</Grid>
+									<Grid item xs={11} sm={5} md={4} >
+										<block>
+											<Typography variant="display3" className={classes.value}>{prom}pts</Typography>
+											<Typography variant="headline" className={classes.betterPeriod}>Promedio general</Typography>
+										</block>
+										{honor > 0 && (
+											<block className={classes.blockHonor}>
+												<Typography variant="display3" className={classes.value}>{honor}</Typography>
+												<Typography variant="headline" className={classes.honorLabel}>Cuadro de honor</Typography>
+											</block>
+										)}
 
+									</Grid>
+									<Grid item xs={11}>
+										<Typography className={classes.label} variant="display1" gutterBottom >Calificaciones por trimestre</Typography>
+										<Line data={dataLine} options={linearOptions} />
+									</Grid>
 								</Grid>
-								<Grid item xs={11}>
-									<Typography className={classes.label} variant="display1" gutterBottom >Calificaciones por trimestre</Typography>
-									<Line data={dataLine} options={linearOptions} />
-								</Grid>
-							</Grid>
-						</Paper>
+							</Paper>
+						</Grid>
 					</Grid>
-				</Grid>
-			</div>
-		);
+				</div>
+			);
+		return <Loading />;
 	}
 }
 ScoresPage.propTypes = {
 	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 const wStyle = withStyles(Styles)(ScoresPage);
