@@ -77,10 +77,10 @@ class ScoresPage extends React.Component {
 					({
 						name: e.sub_des,
 						subject: e.subject,
-						score: !/(I|SI|APL|NaN|i|DIF)/.test(e.grade) ? parseInt(e.grade) : e.grade,
+						score: !/(I|SI|APL|NaN|i|DIF|AP)/.test(e.grade) ? parseInt(e.grade) : e.grade,
 					})
 				);
-				const coursesWithScore = courses.filter((e) => !/(I|SI|APL|NaN|i|DIF)/.test(e.score));
+				const coursesWithScore = courses.filter((e) => !/(I|SI|APL|NaN|i|DIF|AP)/gi.test(e.score));
 				const prom = (coursesWithScore.reduce((prev, current) => prev + current.score, 0) / coursesWithScore.length).toFixed(2);
 				approved += coursesWithScore.filter((e) => e.score >= 10).length;
 				reproved += coursesWithScore.filter((e) => e.score < 10).length;
@@ -102,7 +102,7 @@ class ScoresPage extends React.Component {
 			const everyBetterCourse = Object.values(courses).map((e) =>
 				e.sort((a, b) => b.score - a.score)[0]
 			);
-			const coursesWithScores = everyBetterCourse.filter((e) => !/(I|SI|APL|NaN|i|DIF)/.test(e.score));
+			const coursesWithScores = everyBetterCourse.filter((e) => !/(I|SI|APL|NaN|i|DIF|AP)/gi.test(e.score));
 			const prom = Object.values(coursesWithScores).reduce((prev, current) => prev + current.score, 0);
 			this.setState({
 				prom: prom ? (prom / coursesWithScores.length).toFixed(1) : '0',

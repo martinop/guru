@@ -48,7 +48,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 			this.setState({ fetching: true });
 			const subjects = courses.map((course) => course.code);
 			const hc = courses.reduce((prev, current) => prev + current.hc, 0);
-			if (hc <= 27)
+			if (hc <= 24)
 				CoursesWithSections(subjects)
 					.then((data) => {
 						this.setState({ fetching: false, combinations: [] });

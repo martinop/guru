@@ -5,6 +5,7 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
   ExpansionPanelSummary,
 } from 'material-ui/ExpansionPanel';
+import Table, { TableCell, TableRow } from 'material-ui/Table';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import Typography from 'material-ui/Typography';
 import Styles from './Styles/scoresPerPeriod';
@@ -34,10 +35,14 @@ const ScoresPerPeriod = ({ classes, scores }) => {
                         </block>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <Typography>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                            sit amet blandit leo lobortis eget.
-                        </Typography>
+                        <Table className={classes.table}>
+                            {score.courses.map((course, i) => (
+                                <TableRow key={i}>
+                                    <TableCell>{course.name}</TableCell>
+                                    <TableCell numeric>{course.score}</TableCell>
+                                </TableRow>
+                            ))}
+                        </Table>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             ))}
