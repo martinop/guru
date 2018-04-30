@@ -20,24 +20,20 @@ import FinanceModal from '../../components/financeModal';
 import mySchedule from '../../api/mySchedule';
 import myFinance from '../../api/finance';
 
-import isOnline from '../../utils/isOnline';
-
 class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 	state = {
 		scheduleModal: false,
 		financeModal: false,
 		schedule: null,
 		finance: null,
-		online: true,
 	}
 	componentDidMount() {
 		mySchedule().then((schedule) => this.setState({ schedule }));
 		myFinance().then((finance) => this.setState({ finance }));
-		isOnline().then(() => this.setState({ online: true })).catch(() => this.setState({ online: false }));
 	}
 	render() {
-		const { classes, user, history: { push } } = this.props;
-		const { scheduleModal, schedule, online, finance, financeModal } = this.state;
+		const { classes, user, online, history: { push } } = this.props;
+		const { scheduleModal, schedule, finance, financeModal } = this.state;
 		return (
 			<div className={classes.root}>
 				<Grid
@@ -126,6 +122,7 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 HomePage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	user: PropTypes.object,
+	online: PropTypes.bool,
 	history: PropTypes.shape({
 		push: React.PropTypes.func.isRequired,
 	}).isRequired,

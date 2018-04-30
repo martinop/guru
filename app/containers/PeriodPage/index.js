@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 import { shuffle } from 'lodash';
 import { withStyles } from 'material-ui/styles';
@@ -19,7 +20,7 @@ class PeriodPage extends React.Component {
 	componentDidMount() {
 		getMyCourses(this.props.user.ced.toString())
 			.then((courses) => {
-				this.setState({ courses });
+				this.setState({ courses, fetching: false });
 			});
 	}
 	render() {
@@ -49,5 +50,11 @@ class PeriodPage extends React.Component {
 		return <Loading />;
 	}
 }
+
+PeriodPage.propTypes = {
+	classes: PropTypes.object.isRequired,
+	user: PropTypes.object,
+};
+
 
 export default withStyles(Styles)(PeriodPage);

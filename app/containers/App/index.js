@@ -12,24 +12,34 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import PrivateRoute from '../../utils/privateRoute';
 import Styles from '../Styles/app';
 import Header from '../../components/header';
+import isOnline from '../../utils/isOnline';
 
 import LoginActions from '../../redux/redux-login';
 
 class App extends PureComponent {
+	state = {
+		online: true,
+	}
 	componentWillMount() {
+		isOnline().then(() => this.setState({ online: true })).catch(() => this.setState({ online: false }));
 		this.props.attemptWithSession();
 	}
 	render() {
 		const { classes, user } = this.props;
 		return (
 			<div className={classes.root}>
+				{!this.state.online && (
+					<div style={{ background: '#ff5951', color: 'white', padding: '5px 0px', fontSize: '18px', textAlign: 'center' }}>
+						La aplicacion web esta funcionano de forma offline
+					</div>
+				)}
 				<Header user={user} />
 				<Switch>
 					<Route exact path="/" component={LoginPage} />
-					<PrivateRoute path="/tools" user={user} component={ToolsPage} />
-					<PrivateRoute path="/home" user={user} component={HomePage} />
-					<PrivateRoute path="/scores" user={user} component={ScoresPage} />
-					<PrivateRoute path="/period" user={user} component={PeriodPage} />
+					<PrivateRoute path="/tools" online={this.state.online} user={user} component={ToolsPage} />
+					<PrivateRoute path="/home" online={this.state.online} user={user} component={HomePage} />
+					<PrivateRoute path="/scores" online={this.state.online} user={user} component={ScoresPage} />
+					<PrivateRoute path="/period" online={this.state.online} user={user} component={PeriodPage} />
 					<Route component={NotFoundPage} />
 				</Switch>
 			</div>

@@ -16,6 +16,7 @@ import { CircularProgress } from 'material-ui/Progress';
 
 import LoginActions from '../../redux/redux-login';
 import Styles from '../Styles/login';
+import Loading from '../../components/loading';
 
 class LoginPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -39,7 +40,7 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 		if (user)
 			return <Redirect to="/home" />;
 		else if (!this.state.manualLogin && fetching)
-			return null;
+			return <Loading />;
 		return (
 			<div className={classes.root} >
 				<Grid

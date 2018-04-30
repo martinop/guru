@@ -8,7 +8,7 @@ import {
   } from 'react-router-dom';
 import Loading from '../components/loading';
 
-const PrivateRoute = ({ component: Component, user, fetching, ...rest }) => {
+const PrivateRoute = ({ component: Component, user, fetching, online, ...rest }) => {
 	if (fetching)
 		return (
 			<Loading />
@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, user, fetching, ...rest }) => {
 	return (
 		<Route
 			{...rest}
-			render={(props) => <Component {...props} user={user} />}
+			render={(props) => <Component {...props} user={user} online={online}/>}
 		/>
 	);
 };
@@ -28,6 +28,7 @@ PrivateRoute.propTypes = {
 	location: PropTypes.object,
 	fetching: PropTypes.bool,
 	user: PropTypes.any,
+	online: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
