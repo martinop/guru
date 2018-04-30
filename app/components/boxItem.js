@@ -5,7 +5,7 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import Styles from './Styles/boxItem';
 
-function BoxItem({ label, image, classes, customClasses, onClick, disabled }) {
+function BoxItem({ label, image, color, classes, customClasses, onClick, disabled }) {
 	const buttonClasses = customClasses ? [classes.image, customClasses.join(' ')].join(' ') : classes.image;
 	const onlineLabel = (
 		<Typography
@@ -26,6 +26,8 @@ function BoxItem({ label, image, classes, customClasses, onClick, disabled }) {
 			ESTA FUNCION NO ESTA DISPONIBLE SIN CONEXION
 		</Typography>
 	);
+	const containerStyle = image ? { backgroundImage: `url(${image})` } : { backgroundColor: color };
+	const backdropClass = image ? [classes.imageBackdrop, disabled ? classes.offline : null].join(' ') : classes.normalBackdrop;
 	return (
 		<ButtonBase
 			focusRipple
@@ -37,9 +39,9 @@ function BoxItem({ label, image, classes, customClasses, onClick, disabled }) {
 		>
 			<span
 				className={classes.imageSrc}
-				style={{ backgroundImage: `url(${image})` }}
+				style={containerStyle}
 			/>
-			<span className={[classes.imageBackdrop, disabled ? classes.offline : null].join(' ')} />
+			<span className={backdropClass} />
 			<span className={classes.imageButton}>
 				{!disabled && onlineLabel}
 				{disabled && offlineLabel}
@@ -50,7 +52,7 @@ function BoxItem({ label, image, classes, customClasses, onClick, disabled }) {
 BoxItem.propTypes = {
 	classes: PropTypes.object.isRequired,
 	label: PropTypes.string.isRequired,
-	image: PropTypes.string.isRequired,
+	image: PropTypes.string,
 	onClick: PropTypes.func,
 	customClasses: PropTypes.array,
 	disabled: PropTypes.bool,

@@ -57,6 +57,10 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 							const { schedules, notifications } = r;
 							this.setState({ combinations: schedules, notifications, activeStep: 3, scheduleIndex: 0 });
 						});
+					})
+					.catch((err) => {
+						console.log(err);
+						this.props.history.push('/home');
 					});
 			else
 				console.log('mostrar exceso de horas.. ', hc);
@@ -207,6 +211,7 @@ class ToolsPage extends React.Component { // eslint-disable-line react/prefer-st
 
 ToolsPage.propTypes = {
 	classes: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {

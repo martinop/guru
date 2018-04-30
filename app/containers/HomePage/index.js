@@ -97,7 +97,8 @@ class HomePage extends React.Component { // eslint-disable-line react/prefer-sta
 					</Grid>
 					<Grid item xs={9} sm={3}>
 						<BoxItem
-							label="Materias"
+							label="Cursando"
+							onClick={() => push('/period')}
 							image={CommunityWallpaper}
 							customClasses={[classes.marginTop]}
 						/>

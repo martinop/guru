@@ -25,6 +25,9 @@ export default () => ({
 	},
 	title: {
 		paddingBottom: '0px !important',
+		'& h1': {
+			color: '#000000c9',
+		},
 	},
 	value: {
 		color: 'rgb(0, 80, 158)',

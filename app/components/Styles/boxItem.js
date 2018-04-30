@@ -50,6 +50,14 @@ export default (theme) => ({
 		opacity: 0.7,
 		transition: theme.transitions.create('opacity'),
 	},
+	normalBackdrop: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		top: 0,
+		bottom: 0,
+		opacity: 0.7,
+	},
 	offline: {
 		opacity: 0.9,
 	},

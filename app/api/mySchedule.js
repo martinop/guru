@@ -1,7 +1,7 @@
 import axios from '../utils/axios';
 
 export default () =>
-	axios.get('status/getStudentSchedule')
+	axios.get('http://www.uru.edu:8080/uru-sv/test/status/getStudentSchedule')
 		.then((response) => {
 			if (response.status === 200 || !response.status) {
 				const data = response.status ? JSON.parse(response.data) : response;

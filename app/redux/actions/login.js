@@ -1,7 +1,7 @@
 import axios from '../../utils/axios';
 
 export function login({ id, password }) {
-	const u = 'login';
+	const u = 'http://www.uru.edu:8080/uru-sv/test/login';
 	return axios.post(u, { username: id, password })
 		.then((data) => Promise.resolve(data))
 		.then(({ data: response }) => {
@@ -13,7 +13,7 @@ export function login({ id, password }) {
 }
 
 export function validateSession() {
-	const u = 'status/sessionStatus';
+	const u = 'http://www.uru.edu:8080/uru-sv/test/status/sessionStatus';
 	return axios.get(u)
 		.then((response) => {
 			if (!response.status) {

@@ -7,6 +7,7 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import ToolsPage from 'containers/ToolsPage/Loadable';
 import ScoresPage from 'containers/ScoresPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
+import PeriodPage from 'containers/PeriodPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import PrivateRoute from '../../utils/privateRoute';
 import Styles from '../Styles/app';
@@ -28,6 +29,7 @@ class App extends PureComponent {
 					<PrivateRoute path="/tools" user={user} component={ToolsPage} />
 					<PrivateRoute path="/home" user={user} component={HomePage} />
 					<PrivateRoute path="/scores" user={user} component={ScoresPage} />
+					<PrivateRoute path="/period" user={user} component={PeriodPage} />
 					<Route component={NotFoundPage} />
 				</Switch>
 			</div>

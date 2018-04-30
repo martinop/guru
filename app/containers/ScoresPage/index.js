@@ -104,6 +104,7 @@ class ScoresPage extends React.Component {
 			);
 			const coursesWithScores = everyBetterCourse.filter((e) => !/(I|SI|APL|NaN|i|DIF|AP)/gi.test(e.score));
 			const prom = Object.values(coursesWithScores).reduce((prev, current) => prev + current.score, 0);
+			dataDoughnut.datasets[0].data = [approved, reproved];
 			this.setState({
 				prom: prom ? (prom / coursesWithScores.length).toFixed(1) : '0',
 				honor,
@@ -130,7 +131,6 @@ class ScoresPage extends React.Component {
 			better,
 			fetching,
 		} = this.state;
-		dataDoughnut.datasets[0].data = [approved, reproved];
 		if (!fetching)
 			return (
 				<div className={classes.root} >

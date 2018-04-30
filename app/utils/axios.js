@@ -2,11 +2,7 @@ import axios from 'axios';
 import pouchdb from './db';
 import isOnline from './isOnline';
 
-const base = 'http://www.uru.edu:8080/uru-sv/test/';
-
-const instance = axios.create({
-	baseURL: base,
-});
+const instance = axios.create();
 
 instance.interceptors.request.use(
 	(config) => {
@@ -33,12 +29,12 @@ const methods = {
 					if (data.status === 200) {
 						if (res.data) pouchdb.put({
 							_id: key,
-							data: JSON.parse(data.data),
+							data: typeof data.data === 'object' ? data.data : JSON.parse(data.data),
 							_rev: res._rev,
 						});
 						else pouchdb.put({
 							_id: key,
-							data: JSON.parse(data.data),
+							data: typeof data.data === 'object' ? data.data : JSON.parse(data.data),
 						});
 					}
 

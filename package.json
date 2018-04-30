@@ -261,6 +261,7 @@
     "reselect": "3.0.1",
     "sanitize.css": "4.1.0",
     "seamless-immutable": "^7.1.2",
+    "socket.io-client": "^2.1.0",
     "styled-components": "2.0.0",
     "typeface-roboto": "0.0.50",
     "warning": "3.0.0",
