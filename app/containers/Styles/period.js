@@ -26,4 +26,8 @@ export default (theme) => ({
 	activeCourse: {
 		border: 'solid #000000c2 15px',
 	},
+	file: {
+		display: 'flex',
+		paddingTop: '0px !important',
+	},
 });

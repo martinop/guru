@@ -225,6 +225,7 @@
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
+    "@material-ui/icons": "^1.0.0-beta.43",
     "axios": "^0.18.0",
     "babel-polyfill": "6.23.0",
     "chalk": "1.1.3",

@@ -4,9 +4,11 @@ import Grid from 'material-ui/Grid';
 
 import Paper from 'material-ui/Paper';
 import openSocket from 'socket.io-client';
-import { shuffle } from 'lodash';
+import { shuffle, capitalize } from 'lodash';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+import FileDownload from '@material-ui/icons/FileDownload';
 import getMyCourses from '../../api/courses';
 import getCourseData from '../../api/courseData';
 import Styles from '../Styles/period';
@@ -15,6 +17,7 @@ import Loading from '../../components/loading';
 import Chat from '../../components/chat';
 
 const colors = shuffle(['#00509e', '#8bc34a', '#4caf50', '#03a9f4', '#009688', '#f44336', '#e91e63', '#ff5722', '#ff9800']);
+const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 class PeriodPage extends React.Component {
 	state = {
@@ -104,7 +107,7 @@ class PeriodPage extends React.Component {
 	}
 	render() {
 		const { classes, user, online } = this.props;
-		const { courses, fetching, messages, selectedCourse, loading } = this.state;
+		const { courses, fetching, messages, files, selectedCourse, loading } = this.state;
 		if (!fetching)
 			return (
 				<Grid
@@ -143,9 +146,53 @@ class PeriodPage extends React.Component {
 							/>
 						</Paper>
 					</Grid>
-					<Grid item xs={11} sm={6} md={5} lg={3}>
+					<Grid item xs={11} sm={12} md={12} lg={3}>
 						<Paper className={classes.content}>
 							<Typography variant="display1">Archivos</Typography>
+							<Grid
+								container
+								direction="row"
+								justify="center"
+								spacing={40}
+								style={{ paddingTop: '30px', paddingBottom: '30px' }}
+							>
+								{files.length === 0 && (
+									<Grid xs={10}>
+										<Typography variant="title">Actualmente no hay archivos cargados.</Typography>
+									</Grid>
+								)}
+								{files.map((file, key) => {
+									const date = new Date(file.created_at).toLocaleDateString('es-ES', dateOptions);
+									const downloadFile = async () => {
+										const filePath = `http://localhost:59954/${file.path}`;
+										fetch(filePath)
+											.then((res) => res.blob())
+											.then((blob) => {
+												const a = window.document.createElement('a');
+												a.href = window.URL.createObjectURL(new Blob([blob]));
+												a.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+												document.body.appendChild(a);
+												a.click();
+												document.body.removeChild(a);
+											});
+									};
+									return (
+										<Grid key={key} item xs={9} sm={3} lg={12} className={classes.file}>
+											<IconButton
+												aria-label="Download"
+												onClick={() => downloadFile()}
+											>
+												<FileDownload />
+											</IconButton>
+											<div>
+												<Typography variant="title">{capitalize(date)}</Typography>
+												<Typography>{file.description}</Typography>
+											</div>
+										</Grid>
+									);
+								})}
+
+							</Grid>
 						</Paper>
 					</Grid>
 				</Grid>
