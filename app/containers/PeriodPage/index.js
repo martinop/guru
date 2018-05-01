@@ -27,13 +27,16 @@ class PeriodPage extends React.Component {
 	componentDidMount() {
 		getMyCourses(this.props.user.ced.toString())
 			.then((courses) => {
-				getCourseData(courses[0].id_subject).then((data) => {
-					const { files, messages } = data;
-					this.setState({ files, messages, courses, fetching: false, loading: false, selectedCourse: courses[0] });
-				}).catch((err) => {
-					console.log(err);
-					this.setState({ courses, fetching: false, loading: false });
-				});
+				if (courses.length > 0)
+					getCourseData(courses[0].id_subject).then((data) => {
+						const { files, messages } = data;
+						this.setState({ files, messages, courses, fetching: false, loading: false, selectedCourse: courses[0] });
+					}).catch((err) => {
+						console.log(err);
+						this.setState({ courses, fetching: false, loading: false });
+					});
+				else
+					this.props.history.push('/home');
 			});
 	}
 	changeCourse = (course) => {
@@ -96,6 +99,7 @@ PeriodPage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	user: PropTypes.object,
 	online: PropTypes.bool,
+	history: PropTypes.object,
 };
 
 

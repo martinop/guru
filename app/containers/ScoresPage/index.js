@@ -148,7 +148,7 @@ class ScoresPage extends React.Component {
 						direction="row"
 						spacing={40}
 					>
-						<Grid item xs={11} sm={4} md={3} >
+						<Grid item xs={11} sm={7} md={4} >
 							<ScoresPerPeriod scores={scores} />
 						</Grid>
 						<Grid item xs={11} sm={7} md={7}>

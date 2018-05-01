@@ -44,7 +44,7 @@ class PeriodPage extends React.Component {
 				</div>
 				<div className={classes.inputHolder}>
 					{online && (
-						<div>
+						<div className={classes.inputContainer}>
 							<textarea
 								className={classes.chatInput}
 								value={inputMessage}

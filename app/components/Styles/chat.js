@@ -35,6 +35,10 @@ export default () => ({
 			right: '10px',
 		},
 	},
+	inputContainer: {
+		display: 'flex',
+		width: '100%',
+	},
 	messageSender: {
 		fontSize: '12px',
 		margin: '0 0 10px',
