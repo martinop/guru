@@ -11,8 +11,19 @@ export default (theme) => ({
 	},
 	title: {
 		paddingBottom: '0px !important',
+		display: 'flex',
+		alignItems: 'flex-end',
 		'& h1': {
 			color: '#000000c9',
 		},
+	},
+	boxItem: {
+		height: '115px',
+	},
+	content: {
+		padding: '15px',
+	},
+	activeCourse: {
+		border: 'solid #000000c2 15px',
 	},
 });

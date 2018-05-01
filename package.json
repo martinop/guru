@@ -155,6 +155,7 @@
       "no-console": 0,
       "no-use-before-define": 0,
       "prefer-template": 2,
+      "camelcase": 0,
       "react/forbid-prop-types": 0,
       "react/jsx-first-prop-new-line": [
         2,

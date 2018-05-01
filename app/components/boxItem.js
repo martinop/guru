@@ -56,6 +56,7 @@ BoxItem.propTypes = {
 	onClick: PropTypes.func,
 	customClasses: PropTypes.array,
 	disabled: PropTypes.bool,
+	color: PropTypes.any,
 };
 
 BoxItem.defaulProps = {

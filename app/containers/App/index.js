@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import LoginPage from 'containers/LoginPage/Loadable';
+import PeriodPage from 'containers/PeriodPage/Loadable';
 import ToolsPage from 'containers/ToolsPage/Loadable';
 import ScoresPage from 'containers/ScoresPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
-import PeriodPage from 'containers/PeriodPage/Loadable';
-import CoursePage from 'containers/CoursePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import PrivateRoute from '../../utils/privateRoute';
 import Styles from '../Styles/app';
@@ -41,7 +40,6 @@ class App extends PureComponent {
 					<PrivateRoute path="/home" online={this.state.online} user={user} component={HomePage} />
 					<PrivateRoute path="/scores" online={this.state.online} user={user} component={ScoresPage} />
 					<PrivateRoute path="/period" online={this.state.online} user={user} component={PeriodPage} />
-					<PrivateRoute path="/course" online={this.state.online} user={user} component={CoursePage} />
 					<Route component={NotFoundPage} />
 				</Switch>
 			</div>
