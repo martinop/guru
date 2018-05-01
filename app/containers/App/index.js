@@ -8,6 +8,7 @@ import ToolsPage from 'containers/ToolsPage/Loadable';
 import ScoresPage from 'containers/ScoresPage/Loadable';
 import HomePage from 'containers/HomePage/Loadable';
 import PeriodPage from 'containers/PeriodPage/Loadable';
+import CoursePage from 'containers/CoursePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import PrivateRoute from '../../utils/privateRoute';
 import Styles from '../Styles/app';
@@ -30,7 +31,7 @@ class App extends PureComponent {
 			<div className={classes.root}>
 				{!this.state.online && (
 					<div style={{ background: '#ff5951', color: 'white', padding: '5px 0px', fontSize: '18px', textAlign: 'center' }}>
-						La aplicacion web esta funcionano de forma offline
+						La aplicacion web esta funcionando de forma offline
 					</div>
 				)}
 				<Header user={user} />
@@ -40,6 +41,7 @@ class App extends PureComponent {
 					<PrivateRoute path="/home" online={this.state.online} user={user} component={HomePage} />
 					<PrivateRoute path="/scores" online={this.state.online} user={user} component={ScoresPage} />
 					<PrivateRoute path="/period" online={this.state.online} user={user} component={PeriodPage} />
+					<PrivateRoute path="/course" online={this.state.online} user={user} component={CoursePage} />
 					<Route component={NotFoundPage} />
 				</Switch>
 			</div>

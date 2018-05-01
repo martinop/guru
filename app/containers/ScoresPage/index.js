@@ -70,8 +70,6 @@ class ScoresPage extends React.Component {
 
 	componentDidMount() {
 		getScores().then(({ grades }) => {
-			let approved = 0;
-			let reproved = 0;
 			const scores = Object.keys(grades).sort().map((grade) => {
 				const courses = grades[grade].map((e) =>
 					({
@@ -82,8 +80,6 @@ class ScoresPage extends React.Component {
 				);
 				const coursesWithScore = courses.filter((e) => !/(I|SI|APL|NaN|i|DIF|AP)/gi.test(e.score));
 				const prom = (coursesWithScore.reduce((prev, current) => prev + current.score, 0) / coursesWithScore.length).toFixed(2);
-				approved += coursesWithScore.filter((e) => e.score >= 10).length;
-				reproved += coursesWithScore.filter((e) => e.score < 10).length;
 				return {
 					period: grade,
 					courses,
@@ -102,6 +98,8 @@ class ScoresPage extends React.Component {
 			const everyBetterCourse = Object.values(courses).map((e) =>
 				e.sort((a, b) => b.score - a.score)[0]
 			);
+			const approved = everyBetterCourse.filter((e) => parseFloat(e.score) >= 10 || /(AP)/.test(e.score)).length;
+			const reproved = allCourses.filter((e) => parseFloat(e.score) < 10 || /(APL)/.test(e.score)).length;
 			const coursesWithScores = everyBetterCourse.filter((e) => !/(I|SI|APL|NaN|i|DIF|AP)/gi.test(e.score));
 			const prom = Object.values(coursesWithScores).reduce((prev, current) => prev + current.score, 0);
 			dataDoughnut.datasets[0].data = [approved, reproved];
@@ -142,8 +140,6 @@ class ScoresPage extends React.Component {
 					>
 						<Grid item xs={10} className={classes.title}>
 							<Typography variant="display3">Estadisticas</Typography>
-						</Grid>
-						<Grid item xs={11} sm={11} md={8} lg={6}>
 						</Grid>
 					</Grid>
 					<Grid

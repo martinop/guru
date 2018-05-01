@@ -24,7 +24,7 @@ class PeriodPage extends React.Component {
 			});
 	}
 	render() {
-		const { classes } = this.props;
+		const { classes, history } = this.props;
 		const { courses, fetching } = this.state;
 		if (!fetching)
 			return (
@@ -40,6 +40,7 @@ class PeriodPage extends React.Component {
 					{courses.map((course, index) => (
 						<Grid key={index} item xs={11} sm={6} md={4} lg={3}>
 							<BoxItem
+								onClick={() => history.push({ pathname: '/course', state: { ...course } })}
 								label={course.subject_name}
 								color={colors[index]}
 							/>
@@ -54,6 +55,7 @@ class PeriodPage extends React.Component {
 PeriodPage.propTypes = {
 	classes: PropTypes.object.isRequired,
 	user: PropTypes.object,
+	history: PropTypes.object,
 };
 
 
