@@ -21,7 +21,12 @@ class PeriodPage extends React.Component {
         <div key={_id} className={this.props.classes.messageBoxHolder}>
             <div className={this.props.classes.messageBox}>{message}</div>
         </div>
-    )
+	)
+
+	sendMessage = () => {
+		this.props.onSendMessage(this.state.inputMessage);
+		this.setState({ inputMessage: '' });
+	}
 	render() {
 		const { classes, messages, user, online, loading } = this.props;
 		const { inputMessage } = this.state;
@@ -55,6 +60,7 @@ class PeriodPage extends React.Component {
 								type="submit"
 								value="Enviar"
 								className={inputClasses}
+								onClick={this.sendMessage}
 							/>
 						</div>
 					)}
@@ -73,6 +79,7 @@ PeriodPage.propTypes = {
 	messages: PropTypes.any,
 	online: PropTypes.bool,
 	loading: PropTypes.bool,
+	onSendMessage: PropTypes.func,
 };
 
 
