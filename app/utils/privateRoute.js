@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, user, fetching, online, ...rest })
 	return (
 		<Route
 			{...rest}
-			render={(props) => <Component {...props} user={user} online={online} />}
+			render={(props) => <Component {...props} online={online} />}
 		/>
 	);
 };
