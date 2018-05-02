@@ -40,9 +40,18 @@ const methods = {
 
 					resolve(data);
 				})
-				.catch((error) => reject({
-					error: error.message || 'Error inesperado',
-				})),
+				.catch((error) =>
+					dataFromDB()
+						.then((res) => {
+							if (!res.error) resolve(res.data);
+							reject({
+								error: 'No se encontro informacion almacenada',
+							});
+						})
+						.catch(() => reject({
+							error: error.message || 'Error inesperado',
+						}))
+				),
 			)
 			.catch(() =>
 				dataFromDB()
