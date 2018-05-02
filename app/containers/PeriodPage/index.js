@@ -118,7 +118,7 @@ class PeriodPage extends React.Component {
 					className={classes.container}
 				>
 					<Grid item xs={9} sm={3} className={classes.title}>
-						<Typography variant="display1">Materias cursando</Typography>
+						<Typography variant="display1">Materias {user.permission ? 'dictando' : 'cursando'}</Typography>
 					</Grid>
 					<Grid item xs={9} sm={7} className={classes.title}>
 						<Typography variant="display2">{selectedCourse.subject_name}</Typography>
@@ -157,7 +157,7 @@ class PeriodPage extends React.Component {
 								style={{ paddingTop: '30px', paddingBottom: '30px' }}
 							>
 								{files.length === 0 && (
-									<Grid xs={10}>
+									<Grid item xs={10}>
 										<Typography variant="title">Actualmente no hay archivos cargados.</Typography>
 									</Grid>
 								)}

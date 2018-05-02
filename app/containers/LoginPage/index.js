@@ -37,8 +37,10 @@ class LoginPage extends React.Component { // eslint-disable-line react/prefer-st
 	render() {
 		const { classes, fetching, user, error } = this.props;
 		if (error) console.log(error);
-		if (user)
+		if (user && !user.permission)
 			return <Redirect to="/home" />;
+		else if (user && user.permission)
+			return <Redirect to="/period" />;
 		else if (!this.state.manualLogin && fetching)
 			return <Loading />;
 		return (
