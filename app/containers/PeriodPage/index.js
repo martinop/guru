@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { connect } from 'react-redux';
+import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import openSocket from 'socket.io-client';
 import { shuffle, capitalize } from 'lodash';
@@ -11,6 +13,7 @@ import IconButton from 'material-ui/IconButton';
 import FileDownload from '@material-ui/icons/FileDownload';
 import getMyCourses from '../../api/courses';
 import getCourseData from '../../api/courseData';
+import uploadFile from '../../api/uploadFile';
 import Styles from '../Styles/period';
 import BoxItem from '../../components/boxItem';
 import Loading from '../../components/loading';
@@ -27,6 +30,8 @@ class PeriodPage extends React.Component {
 		loading: true,
 		files: [],
 		messages: [],
+		file: null,
+		description: '',
 	}
 
 	componentDidMount() {
@@ -93,7 +98,24 @@ class PeriodPage extends React.Component {
 				username,
 			}));
 	}
+	handleFileUpload = (event) => {
+		const file = event.target.files[0];
+		this.setState({ file });
+	}
 
+	uploadFile = () => {
+		const id_subject = this.state.selectedCourse.id_subject;
+		const file = this.state.file;
+		uploadFile(this.state.description, id_subject, this.props.user.ced, file)
+		.then((data) => this.setState((prevState) => {
+			const files = prevState.files;
+			files.push(data.data.data);
+			return {
+				files,
+			};
+		}))
+		.catch((err) => console.log(err));
+	}
 	changeCourse = (course) => {
 		this.setState({ loading: true });
 		getCourseData(course.id_subject).then((data) => {
@@ -107,7 +129,7 @@ class PeriodPage extends React.Component {
 	}
 	render() {
 		const { classes, user, online } = this.props;
-		const { courses, fetching, messages, files, selectedCourse, loading } = this.state;
+		const { courses, fetching, messages, files, selectedCourse, loading, description } = this.state;
 		if (!fetching)
 			return (
 				<Grid
@@ -191,7 +213,23 @@ class PeriodPage extends React.Component {
 										</Grid>
 									);
 								})}
-
+								{user.permission === 'PROF' && (
+									<Grid item xs={11}>
+										<input
+											onChange={this.handleFileUpload}
+											type="file"
+										/>
+										<TextField
+											label="Descripcion"
+											value={description}
+											onChange={(e) => this.setState({ description: e.target.value })}
+											margin="normal"
+										/>
+										<Button onClick={this.uploadFile} variant="raised" color="primary">
+											Subir Archivo
+										</Button>
+									</Grid>
+								)}
 							</Grid>
 						</Paper>
 					</Grid>
