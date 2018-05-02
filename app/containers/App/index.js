@@ -25,7 +25,7 @@ class App extends PureComponent {
 		this.props.attemptWithSession();
 	}
 	render() {
-		const { classes, user } = this.props;
+		const { classes } = this.props;
 		return (
 			<div className={classes.root}>
 				{!this.state.online && (
@@ -33,13 +33,13 @@ class App extends PureComponent {
 						La aplicacion web esta funcionando de forma offline
 					</div>
 				)}
-				<Header user={user} />
+				<Header />
 				<Switch>
 					<Route exact path="/" component={LoginPage} />
-					<PrivateRoute path="/tools" online={this.state.online} user={user} component={ToolsPage} />
-					<PrivateRoute path="/home" online={this.state.online} user={user} component={HomePage} />
-					<PrivateRoute path="/scores" online={this.state.online} user={user} component={ScoresPage} />
-					<PrivateRoute path="/period" online={this.state.online} user={user} component={PeriodPage} />
+					<PrivateRoute path="/tools" online={this.state.online} component={ToolsPage} />
+					<PrivateRoute path="/home" online={this.state.online} component={HomePage} />
+					<PrivateRoute path="/scores" online={this.state.online} component={ScoresPage} />
+					<PrivateRoute path="/period" online={this.state.online} component={PeriodPage} />
 					<Route component={NotFoundPage} />
 				</Switch>
 			</div>
@@ -49,18 +49,11 @@ class App extends PureComponent {
 
 App.propTypes = {
 	classes: PropTypes.object.isRequired,
-	user: PropTypes.object,
 	attemptWithSession: PropTypes.func,
-};
-
-
-const mapStateToProps = (state) => {
-	const { fetching, user } = state.get('login');
-	return { fetching, user };
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	attemptWithSession: () => dispatch(LoginActions.loginWithSession()),
 });
 
-export default withRouter(withStyles(Styles)(connect(mapStateToProps, mapDispatchToProps)(App)));
+export default withRouter(withStyles(Styles)(connect(null, mapDispatchToProps)(App)));

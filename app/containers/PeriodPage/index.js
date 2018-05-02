@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
-
+import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import openSocket from 'socket.io-client';
 import { shuffle, capitalize } from 'lodash';
@@ -208,5 +208,9 @@ PeriodPage.propTypes = {
 	history: PropTypes.object,
 };
 
+const mapStateToProps = (state) => {
+	const { user } = state.get('login');
+	return { user };
+};
 
-export default withStyles(Styles)(PeriodPage);
+export default connect(mapStateToProps, null)(withStyles(Styles)(PeriodPage));
